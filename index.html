@@ -6,7 +6,7 @@
 
     <script src="http://localhost:9292/lib/goog-base.js"></script>
     <script src="http://localhost:9292/lib/goog-deps.js"></script>
-    <script src="http://localhost:9292/dist/main.js"></script>
+    <script src="http://localhost:9292/dist/main.min.js"></script>
     <script>
       var orig = document.addEventListener;
       /* document.addEventListener = function(type, listener, useCapture) {
@@ -20,7 +20,7 @@
       }
 
       function b() {
-        throw new Error("This is a new kind of error!");
+        throw new Error("Advanced mode error test");
       }
 
       document.addEventListener("click", function(e) {

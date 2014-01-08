@@ -79,9 +79,9 @@ window["Trackets"] = {
   eventHandler: function(context) {
     return function(event) {
       context.eventLog.push({
-        type: "event-click",
-        html: event.target.outerHTML,
-        timestamp: +new Date()
+        "type": "event-click",
+        "html": event.target.outerHTML,
+        "timestamp": +new Date()
       });
     };
   },
@@ -92,18 +92,18 @@ window["Trackets"] = {
     */
   serialize: function(message, fileName, lineNumber, stack) {
     var data = {
-      api_key: this.api_key,
-      error: {
-        message: message,
-        file_name: fileName,
-        line_number: lineNumber,
-        url: document.location.href,
-        user_agent: navigator.userAgent,
-        stacktrace: normalizeStack(stack), // TODO - check if this is null sometimes?
-        custom_data: this.custom_data,
-        guid: this.guid,
-        event_log: this.eventLog,
-        timestamp: new Date().getTime()
+      "api_key": this.api_key,
+      "error": {
+        "message": message,
+        "file_name": fileName,
+        "line_number": lineNumber,
+        "url": document.location.href,
+        "user_agent": navigator.userAgent,
+        "stacktrace": normalizeStack(stack), // TODO - check if this is null sometimes?
+        "custom_data": this.custom_data,
+        "guid": this.guid,
+        "event_log": this.eventLog,
+        "timestamp": new Date().getTime()
       }
     };
 
