@@ -1,9 +1,19 @@
-function Queue(interval) {
+function Queue(interval, key) {
+  this.key = key;
   this.interval = interval || 5000;
-  this.q = [];
+
+  if (typeof this.key === "undefined") {
+    this.q = [];
+  } else {
+    this.q = JSON.parse(window.localStorage.getItem(key)) || [];
+  }
 
   this.push = function(item) {
     this.q.push(item);
+
+    if (typeof this.key !== "undefined") {
+      window.localStorage.setItem(key, JSON.stringify(this.q));
+    }
   };
 
   this.pop = function() {

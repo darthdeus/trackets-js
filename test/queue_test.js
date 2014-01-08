@@ -37,3 +37,22 @@ asyncTest("Queue can tick manually", function() {
 
   q.tick();
 });
+
+
+module("Queue persistence", {
+  teardown: function() {
+    window.localStorage.clear();
+  }
+});
+
+test("Items pushed to a queue are persisted in localStorage", function() {
+  var q1 = new Queue(5000, "test-persistence-key");
+  q1.push(1);
+  q1.push(2);
+  q1.push(3);
+
+  var q2 = new Queue(5000, "test-persistence-key");
+  equal(q2.pop(), 3, "Item should remain the same even when re-creating a queue");
+  equal(q2.pop(), 2, "Item should remain the same even when re-creating a queue");
+  equal(q2.pop(), 1, "Item should remain the same even when re-creating a queue");
+});
