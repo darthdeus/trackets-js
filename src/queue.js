@@ -12,9 +12,9 @@ function Queue(interval) {
 
   var self = this;
 
-  var stream = new Bacon.Bus();
+  var stream = new Stream();
 
-  stream.onValue(function() {
+  stream.subscribe(function() {
     if (typeof self.worker === "function") {
       if (self.q.length > 0) {
         self.worker.call(self, self.q.pop());
