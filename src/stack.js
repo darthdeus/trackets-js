@@ -65,3 +65,4 @@ function normalizeStack(stack) {
   }
 }
 
+goog.provide("stack");

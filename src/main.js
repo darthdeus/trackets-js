@@ -1,3 +1,10 @@
+goog.require("guid");
+goog.require("queue");
+goog.require("stack");
+goog.require("stream");
+goog.require("wrapper");
+goog.require("ajax");
+
 var TRACKETS_LOCALSTORAGE_KEY = "__trackets_localstorage_guid";
 
 window.Trackets = {
@@ -143,46 +150,6 @@ function storeErrorObject(e) {
 
 function isNative(f) {
   return f && /native code/.test(f.toString());
-}
-
-function sendRequest(url, postData) {
-  var req = createXMLHTTPObject();
-  if (!req) return;
-
-  req.open("POST", url, true);
-  req.setRequestHeader("Authorization", "Basic " + btoa("tester:test123"));
-  req.setRequestHeader("Content-type", "application/json");
-
-  req.send(postData);
-
-  req.onreadystatechange = function(e) {
-    if (req.readyState == 4) {
-      if (req.status != 200 && req.status != 201) {
-        Trackets.reportQueue.push([url, postData]);
-        console.log("Trackets failed to deliver the error report data. Retrying in 20 seconds.");
-      }
-    }
-  }
-}
-
-var XMLHttpFactories = [
-  function () {return new XMLHttpRequest(); },
-  function () {return new ActiveXObject("Msxml2.XMLHTTP"); },
-  function () {return new ActiveXObject("Msxml3.XMLHTTP"); },
-  function () {return new ActiveXObject("Microsoft.XMLHTTP"); }
-];
-
-function createXMLHTTPObject() {
-  var xmlhttp = false;
-  for (var i= 0; i < XMLHttpFactories.length; i++) {
-    try {
-      xmlhttp = XMLHttpFactories[i]();
-    } catch (e) {
-      continue;
-    }
-    break;
-  }
-  return xmlhttp;
 }
 
 function throwIfMissing(condition, message) {

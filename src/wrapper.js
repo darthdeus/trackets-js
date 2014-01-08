@@ -75,3 +75,5 @@ function wrapAll() {
   document.addEventListener("DOMContentLoaded", wrapEventHandlers);
   window.onerror = tracketsOnError;
 }
+
+goog.provide("wrapper");

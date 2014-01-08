@@ -30,3 +30,4 @@ function GuidGenerator(key) {
   };
 }
 
+goog.provide("guid");

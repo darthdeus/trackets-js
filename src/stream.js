@@ -16,3 +16,5 @@ function Stream() {
     this.subscribers.push(f);
   };
 }
+
+goog.provide("stream");
