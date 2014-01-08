@@ -71,7 +71,7 @@ function wrapEventHandlers() {
 }
 
 function wrapAll() {
-  wrapTimeout();
+  wrapTimeout(window);
   document.addEventListener("DOMContentLoaded", wrapEventHandlers);
   window.onerror = tracketsOnError;
 }

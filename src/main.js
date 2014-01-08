@@ -1,3 +1,9 @@
+if (typeof goog === "undefined") {
+  goog = {
+    require: function() { }
+  }
+}
+
 goog.require("guid");
 goog.require("queue");
 goog.require("stack");
@@ -7,75 +13,56 @@ goog.require("ajax");
 
 var TRACKETS_LOCALSTORAGE_KEY = "__trackets_localstorage_guid";
 
-window.Trackets = {
-  init: function(options) {
+window["Trackets"] = {
+  "init": function(options) {
     if (this.__init_done) return; // allow only one init
 
     options = options || {};
-    throwIfMissing(options.api_key, "api_key is required.");
+    throwIfMissing(options["api_key"], "api_key is required.");
 
-    this.guid = assignGuid();
-    this.api_key = options.api_key;
-    this.custom_data = options.custom_data || {};
-    this.callback = options.callback;
-    this.tick = options.tick;
+    this.guid = new GuidGenerator(TRACKETS_LOCALSTORAGE_KEY).assignGuid();
+    this.api_key = options["api_key"];
+    this.custom_data = options["custom_data"] || {};
+    this.callback = options["callback"];
+    this.tick = options["tick"];
 
     this.eventLog = [];
 
     document.body.addEventListener("click", this.eventHandler(this));
 
-    if (options.api_base_url || window.__TRACKETS_DEBUG_MODE || options.debug_mode) {
+    if (options.api_base_url || window.__TRACKETS_DEBUG_MODE || options["debug_mode"]) {
       this.debug_mode = true;
       console.log("You're running Trackets in development mode. Define `window.__trackets_mock_send_request` to override error reports to production API.");
     }
 
-    this.api_base_url = options.api_base_url || "http://beta.trackets.com";
+    this.api_base_url = options["api_base_url"] || "http://beta.trackets.com";
     this.report_url = this.api_base_url + "/reports";
 
     this.log("Initialized Trackets with API key:", this.api_key);
 
     wrapAll();
 
-    this.reportQueue = [];
+    // TODO - add localstorage key
+    this.queue = new Queue(this.tick || 5000);
+    this.queue.worker = this.workerTick(this);
 
-    this.startWorker();
     this.__init_done = true;
-  },
-
-  startWorker: function() {
-    console.log("START worker");
-    this.___worker_interval = setInterval(this.workerTick(this), this.tick || 5000);
-  },
-
-  stopWorker: function() {
-    console.log("STOP worker");
-    clearInterval(this.___worker_interval);
   },
 
   forceTick: function() {
     console.group("Force tick");
-    this.stopWorker();
-    this.workerTick(this)();
-    this.startWorker();
+    this.queue.tick();
     console.groupEnd();
   },
 
   workerTick: function(self) {
-    return function() {
-      var currentQueue = self.reportQueue;
-      self.reportQueue = [];
-
-      while (currentQueue.length > 0) {
-        console.log("Working");
-        var item = currentQueue.pop();
-
-        // In order to easily test trackets client integration a global window.__trackets_mock_send_request
-        // function can be defined, in which case it is used instead of sending data to the server.
-        if (typeof window.__trackets_mock_send_request === "function") {
-          window.__trackets_mock_send_request(self.report_url, item);
-        } else {
-          sendRequest.apply(self, item);
-        }
+    return function(item) {
+      // In order to easily test trackets client integration a global window.__trackets_mock_send_request
+      // function can be defined, in which case it is used instead of sending data to the server.
+      if (typeof window.__trackets_mock_send_request === "function") {
+        window.__trackets_mock_send_request(self.report_url, item);
+      } else {
+        sendRequest.apply(self, item);
       }
     };
   },
@@ -129,7 +116,7 @@ window.Trackets = {
 
     data = this.serialize(message, filename, lineNumber, stack);
 
-    this.reportQueue.push([this.report_url, JSON.stringify(data)]);
+    this.queue.push([this.report_url, JSON.stringify(data)]);
     this.forceTick();
   }
 };

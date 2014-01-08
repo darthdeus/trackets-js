@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+    <title>Trackets Playground</title>
+
+    <script src="http://localhost:9292/lib/goog-base.js"></script>
+    <script src="http://localhost:9292/lib/goog-deps.js"></script>
+    <script src="http://localhost:9292/dist/main.js"></script>
+    <script>
+      var orig = document.addEventListener;
+      /* document.addEventListener = function(type, listener, useCapture) {
+         var a = arguments;
+         a[1] = wrap(a[1]);
+         orig.apply(this, a);
+         }; */
+
+      function a() {
+        b();
+      }
+
+      function b() {
+        throw new Error("Something went wrong");
+      }
+
+      document.addEventListener("click", function(e) {
+        console.log("clicked");
+        a();
+      });
+
+
+    </script>
+
+  </head>
+  <body>
+    <button type="submit">Click on me</button>
+    <script>
+      Trackets.init({ api_key: "d1c375ec17ec8335a9c177ace3d766e4" })
+    </script>
+  </body>
+</html>
