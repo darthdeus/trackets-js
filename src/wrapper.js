@@ -52,27 +52,27 @@ function wrapTimeout(object, handler) {
   };
 }
 
-function wrapEventHandlers() {
+function wrapEventHandlers(handler) {
   if (document.addEventListener) {
-    wrapListenerHandlers(document);
-    wrapListenerHandlers(window);
-    wrapListenerHandlers(Element.prototype);
+    wrapListenerHandlers(document, handler);
+    wrapListenerHandlers(window, handler);
+    wrapListenerHandlers(Element.prototype, handler);
 
     if (isNative(HTMLButtonElement.prototype.addEventListener)) {
       var ELEMENT_NAMES = ["HTMLAnchorElement", "HTMLAppletElement", "HTMLAreaElement", "HTMLBaseElement", "HTMLBaseFontElement", "HTMLBlockquoteElement", "HTMLBodyElement", "HTMLBRElement", "HTMLButtonElement", "HTMLDirectoryElement", "HTMLDivElement", "HTMLDListElement", "HTMLFieldSetElement", "HTMLFontElement", "HTMLFormElement", "HTMLFrameElement", "HTMLFrameSetElement", "HTMLHeadElement", "HTMLHeadingElement", "HTMLHRElement", "HTMLHtmlElement", "HTMLIFrameElement", "HTMLImageElement", "HTMLInputElement", "HTMLIsIndexElement", "HTMLLabelElement", "HTMLLayerElement", "HTMLLegendElement", "HTMLLIElement", "HTMLLinkElement", "HTMLMapElement", "HTMLMenuElement", "HTMLMetaElement", "HTMLModElement", "HTMLObjectElement", "HTMLOListElement", "HTMLOptGroupElement", "HTMLOptionElement", "HTMLParagraphElement", "HTMLParamElement", "HTMLPreElement", "HTMLQuoteElement", "HTMLScriptElement", "HTMLSelectElement", "HTMLStyleElement", "HTMLTableCaptionElement", "HTMLTableCellElement", "HTMLTableColElement", "HTMLTableElement", "HTMLTableRowElement", "HTMLTableSectionElement", "HTMLTextAreaElement", "HTMLTitleElement", "HTMLUListElement"];
       for (var i = 0; i < ELEMENT_NAMES.length; i++) {
         var name = ELEMENT_NAMES[i];
         if (window[name]) {
-          wrapListenerHandlers(window[name].prototype);
+          wrapListenerHandlers(window[name].prototype, handler);
         }
       }
     }
   }
 }
 
-function wrapAll() {
-  wrapTimeout(window);
-  document.addEventListener("DOMContentLoaded", wrapEventHandlers);
+function wrapAll(handler) {
+  wrapTimeout(window, handler);
+  document.addEventListener("DOMContentLoaded", function() { wrapEventHandlers(handler); });
   window.onerror = tracketsOnError;
 }
 

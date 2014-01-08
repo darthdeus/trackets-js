@@ -4,6 +4,8 @@ if (typeof goog === "undefined") {
   }
 }
 
+goog.provide("trackets");
+
 goog.require("guid");
 goog.require("queue");
 goog.require("stack");
@@ -40,18 +42,19 @@ window["Trackets"] = {
 
     this.log("Initialized Trackets with API key:", this.api_key);
 
-    wrapAll();
+    wrapAll(storeErrorObject);
 
     // TODO - add localstorage key
-    this.queue = new Queue(this.tick || 5000);
+    this.queue = new Queue(this.tick || 2000);
     this.queue.worker = this.workerTick(this);
+    this.queue.start();
 
     this.__init_done = true;
   },
 
   forceTick: function() {
     console.group("Force tick");
-    this.queue.tick();
+    // this.queue.tick();
     console.groupEnd();
   },
 
@@ -60,7 +63,7 @@ window["Trackets"] = {
       // In order to easily test trackets client integration a global window.__trackets_mock_send_request
       // function can be defined, in which case it is used instead of sending data to the server.
       if (typeof window.__trackets_mock_send_request === "function") {
-        window.__trackets_mock_send_request(self.report_url, item);
+        window.__trackets_mock_send_request(self.report_url, JSON.parse(item[1]));
       } else {
         sendRequest.apply(self, item);
       }
@@ -133,6 +136,7 @@ function tracketsOnError(message, fileName, lineNumber) {
  */
 function storeErrorObject(e) {
   window.__trackets_last_error = e;
+  throw e;
 }
 
 function isNative(f) {
@@ -144,3 +148,11 @@ function throwIfMissing(condition, message) {
     throw new Error("Assertion Error: " + message);
   }
 }
+
+// window.__trackets_mock_send_request = function(url, data) {
+//   console.group("Error report");
+//   console.log("URL:", url);
+//   console.log("Stacktrace", data.error.stacktrace);
+//   console.log(data.error);
+//   console.groupEnd();
+// }
