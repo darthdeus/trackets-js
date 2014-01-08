@@ -1,4 +1,4 @@
-FILES=--js src/*.js --js lib/rsvp.min.js
+FILES=--js src/*.js
 
 default:
 	closure-compiler ${FILES} --compilation_level WHITESPACE_ONLY --formatting=PRETTY_PRINT

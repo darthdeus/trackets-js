@@ -1,3 +1,6 @@
+/**
+ * @this {Queue}
+ */
 function Queue(interval, key) {
   this.key = key;
   this.interval = interval || 5000;

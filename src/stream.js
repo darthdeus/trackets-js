@@ -1,3 +1,6 @@
+/**
+ * @this {Stream}
+ */
 function Stream() {
   this.subscribers = [];
 
