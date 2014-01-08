@@ -1,0 +1,24 @@
+{
+  "name": "trackets-js",
+  "version": "0.0.0",
+  "description": "$ asdf     $ open http://localhost:9292/qunit.html",
+  "main": "gulpfile.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "gulp": "~3.2.4"
+  },
+  "devDependencies": {
+    "gulp-closure-compiler": "~0.1.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@bitbucket.org/darthdeus/trackets-js.git"
+  },
+  "author": "",
+  "license": "BSD"
+}
