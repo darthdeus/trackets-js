@@ -32,7 +32,7 @@ window["Trackets"] = {
 
     document.body.addEventListener("click", this.eventHandler(this));
 
-    if (options.api_base_url || window.__TRACKETS_DEBUG_MODE || options["debug_mode"]) {
+    if (options["api_base_url"] || window.__TRACKETS_DEBUG_MODE || options["debug_mode"]) {
       this.debug_mode = true;
       console.log("You're running Trackets in development mode. Define `window.__trackets_mock_send_request` to override error reports to production API.");
     }
@@ -54,7 +54,7 @@ window["Trackets"] = {
 
   forceTick: function() {
     console.group("Force tick");
-    // this.queue.tick();
+    this.queue.tick();
     console.groupEnd();
   },
 
