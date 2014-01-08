@@ -1,3 +1,5 @@
+var TRACKETS_LOCALSTORAGE_KEY = "__trackets_localstorage_guid";
+
 window.Trackets = {
   init: function(options) {
     if (this.__init_done) return; // allow only one init
@@ -242,17 +244,6 @@ function sendRequest(url, postData) {
   }
 }
 
-function s4() {
-  return Math.floor((1 + Math.random()) * 0x10000)
-  .toString(16)
-  .substring(1);
-}
-
-function generateGuid() {
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
-}
-
 var XMLHttpFactories = [
   function () {return new XMLHttpRequest(); },
   function () {return new ActiveXObject("Msxml2.XMLHTTP"); },
@@ -276,19 +267,5 @@ function createXMLHTTPObject() {
 function throwIfMissing(condition, message) {
   if (!condition) {
     throw new Error("Assertion Error: " + message);
-  }
-}
-
-function assignGuid() {
-  var TRACKETS_LOCALSTORAGE_KEY = "__trackets_localstorage_guid";
-  if (window.localStorage) {
-    var guid = window.localStorage.getItem(TRACKETS_LOCALSTORAGE_KEY);
-
-    if (!guid) {
-      guid = generateGuid();
-      window.localStorage.setItem(TRACKETS_LOCALSTORAGE_KEY, guid);
-    }
-
-    return guid;
   }
 }

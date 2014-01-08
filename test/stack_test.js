@@ -1,3 +1,5 @@
+module("Stacktrace parser");
+
 function parseLineExpectation(line, functionName, file, lineNumber) {
   var match = matchStackLine(line);
 
