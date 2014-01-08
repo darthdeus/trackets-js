@@ -1,0 +1,9 @@
+GEM
+  specs:
+    rock_config (0.0.6)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  rock_config
