@@ -41,3 +41,55 @@ test("wrapped function can be given as a string, in which case it's evaled", fun
     equal(e.message, "test error message");
   }
 });
+
+test("addEventListener wraps the listener", function() {
+  var obj = {
+    addEventListener: function(type, listener, capture) {
+      this.f = listener;
+    },
+
+    removeEventListener: function() {
+      delete this.f;
+    }
+  };
+
+  wrapListenerHandlers(obj, function(e) {
+    equal(e.message, "something went wrong");
+  });
+
+  obj.addEventListener("foo", function() {
+    throw new Error("something went wrong");
+  });
+
+  obj.f();
+});
+
+test("wrapTimeout", function() {
+  expect(2);
+
+  var obj = {
+    setTimeout: function(f, timeout) {
+      obj.f = f;
+    },
+
+    setInterval: function(f, interval) {
+      obj.fi = f;
+    }
+  };
+
+  wrapTimeout(obj, function(e) {
+    equal(e.message, "something went wrong");
+  });
+
+  obj.setTimeout(function() {
+    throw new Error("something went wrong");
+  }, 500);
+
+  obj.f();
+
+  obj.setInterval(function() {
+    throw new Error("something went wrong");
+  }, 500);
+
+  obj.fi();
+});
