@@ -5,7 +5,6 @@ function sendRequest(url, postData) {
   if (!req) return;
 
   req.open("POST", url, true);
-  req.setRequestHeader("Authorization", "Basic " + btoa("tester:test123"));
   req.setRequestHeader("Content-type", "application/json");
 
   req.send(postData);
