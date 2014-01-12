@@ -1,4 +1,4 @@
-OPTIONS=--manage_closure_dependencies --only_closure_dependencies --closure_entry_point trackets
+OPTIONS=--manage_closure_dependencies --only_closure_dependencies --closure_entry_point trackets.main
 FILES=--js src/*.js
 
 default:

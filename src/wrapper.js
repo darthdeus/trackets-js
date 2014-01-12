@@ -1,3 +1,5 @@
+goog.provide("trackets.wrapper");
+
 function wrap(f, handler) {
   if (f.isWrapped) {
     return f;
@@ -75,5 +77,3 @@ function wrapAll(handler) {
   document.addEventListener("DOMContentLoaded", function() { wrapEventHandlers(handler); });
   window.onerror = tracketsOnError;
 }
-
-goog.provide("wrapper");

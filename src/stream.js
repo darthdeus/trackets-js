@@ -1,3 +1,5 @@
+goog.provide("trackets.stream");
+
 /**
  * @this {Stream}
  */
@@ -16,5 +18,3 @@ function Stream() {
     this.subscribers.push(f);
   };
 }
-
-goog.provide("stream");

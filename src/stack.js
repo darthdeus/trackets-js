@@ -1,3 +1,5 @@
+goog.provide("trackets.stack");
+
 var CHROME_REGEX = / *at (\S+) \((.+?):(\d+):\d+\)/;
 
 // Safari and Firefox use the same format for stacktraces,
@@ -64,5 +66,3 @@ function normalizeStack(stack) {
     return joinParsedStack(parseStack(stack));
   }
 }
-
-goog.provide("stack");

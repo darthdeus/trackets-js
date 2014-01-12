@@ -1,3 +1,5 @@
+goog.provide("trackets.guid");
+
 function GuidGenerator(key) {
   this.key = key;
 
@@ -29,5 +31,3 @@ function GuidGenerator(key) {
     window.localStorage.removeItem(key);
   };
 }
-
-goog.provide("guid");

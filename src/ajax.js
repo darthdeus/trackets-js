@@ -1,4 +1,4 @@
-goog.provide("ajax");
+goog.provide("trackets.ajax");
 
 function sendRequest(url, postData) {
   var req = createXMLHTTPObject();

@@ -1,3 +1,5 @@
+goog.provide("trackets.queue");
+
 /**
  * @this {Queue}
  */
@@ -49,5 +51,3 @@ function Queue(interval, key) {
     clearInterval(self.intervalId);
   };
 }
-
-goog.provide("queue");
