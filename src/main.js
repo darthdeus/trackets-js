@@ -16,15 +16,6 @@ goog.require("trackets.ajax");
 
 var TRACKETS_LOCALSTORAGE_KEY = "__trackets_localstorage_guid";
 
-contentLoaded(window, function() {
-  var script = document.querySelector("[data-trackets-customer]");
-  var attr;
-
-  if (attr = script.attributes["data-trackets-customer"]) {
-    Trackets.init({ api_key: attr.value });
-  }
-});
-
 window["Trackets"] = {
   "init": function(options) {
     if (this.__init_done) return; // allow only one init
@@ -44,7 +35,7 @@ window["Trackets"] = {
 
     if (options["api_base_url"] || window.__TRACKETS_DEBUG_MODE || options["debug_mode"]) {
       this.debug_mode = true;
-      console.log("You're running Trackets in development mode. Define `window.__trackets_mock_send_request` to override error reports to production API.");
+      this.log("You're running Trackets in development mode. Define `window.__trackets_mock_send_request` to override error reports to production API.");
     }
 
     this.api_base_url = options["api_base_url"] || "http://beta.trackets.com";
@@ -166,3 +157,13 @@ function throwIfMissing(condition, message) {
 //   console.log(data.error);
 //   console.groupEnd();
 // }
+
+contentLoaded(window, function() {
+  var script = document.querySelector("[data-trackets-customer]");
+  var attr;
+
+  if (attr = script.attributes["data-trackets-customer"]) {
+    var t = window["Trackets"];
+    t["init"].call(t, { "api_key": attr.value });
+  }
+});
