@@ -1,1 +1,1 @@
-exec java -jar ./compiler.jar "$@"
+exec java -jar $(dirname $0)/compiler.jar "$@"

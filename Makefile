@@ -2,13 +2,14 @@ OPTIONS=--manage_closure_dependencies --only_closure_dependencies --closure_entr
 FILES=--js src/*.js
 # DEBUG=--formatting=PRETTY_PRINT
 
+COMPILER=./bin/compiler.sh
 
 default:
-	@closure-compiler ${OPTIONS} ${FILES} --compilation_level WHITESPACE_ONLY --formatting=PRETTY_PRINT > dist/main.js
+	@${COMPILER} ${OPTIONS} ${FILES} --compilation_level WHITESPACE_ONLY --formatting=PRETTY_PRINT > dist/main.js
 
 simple:
-	@closure-compiler ${OPTIONS} ${FILES} --formatting=PRETTY_PRINT > dist/main.js
+	@${COMPILER} ${OPTIONS} ${FILES} --formatting=PRETTY_PRINT > dist/main.js
 
 advanced:
-	@closure-compiler ${OPTIONS} ${FILES} ${DEBUG} --compilation_level ADVANCED_OPTIMIZATIONS > dist/main.min.js
+	@${COMPILER} ${OPTIONS} ${FILES} ${DEBUG} --compilation_level ADVANCED_OPTIMIZATIONS > dist/main.min.js
 
