@@ -20,7 +20,7 @@ window["Trackets"] = {
     if (this.__init_done) return; // allow only one init
 
     options = options || {};
-    throwIfMissing(options["api_key"], "api_key is required.");
+    this.throwIfMissing(options["api_key"], "api_key is required.");
 
     this.guid = new GuidGenerator(TRACKETS_LOCALSTORAGE_KEY).assignGuid();
     this.api_key = options["api_key"];
@@ -42,7 +42,7 @@ window["Trackets"] = {
 
     this.log("Initialized Trackets with API key:", this.api_key);
 
-    wrapAll(storeErrorObject);
+    wrapAll(this.storeErrorObject, this.onErrorHandler);
 
     // TODO - add localstorage key
     this.queue = new Queue(this.tick || 2000);
@@ -50,6 +50,16 @@ window["Trackets"] = {
     this.queue.start();
 
     this.__init_done = true;
+  },
+
+  /*
+   * Error objects in try/catch are stored and rethrown, in order to capture
+   * the filename and a line number along with the stacktrace. The stored error
+   * is then handled by window.onerror callback.
+   */
+  storeErrorObject: function(e) {
+    window.__trackets_last_error = e;
+    throw e;
   },
 
   forceTick: function() {
@@ -115,39 +125,25 @@ window["Trackets"] = {
   },
 
   "notify": function(message, filename, lineNumber, stack) {
-    throwIfMissing(this.api_key, "api_key is required");
+    this.throwIfMissing(this.api_key, "api_key is required");
 
     data = this.serialize(message, filename, lineNumber, stack);
 
     this.queue.push([this.report_url, JSON.stringify(data)]);
     this.forceTick();
+  },
+
+  throwIfMissing: function(condition, message) {
+    if (!condition) {
+      throw new Error("Assertion Error: " + message);
+    }
+  },
+
+  onErrorHandler: function(message, fileName, lineNumber) {
+    var actualMessage = (window.__trackets_last_error && window.__trackets_last_error.message) || message;
+    window["Trackets"]["notify"](actualMessage, fileName, lineNumber, window.__trackets_last_error && window.__trackets_last_error.stack);
   }
 };
-
-function tracketsOnError(message, fileName, lineNumber) {
-  var actualMessage = (window.__trackets_last_error && window.__trackets_last_error.message) || message;
-  Trackets.notify(actualMessage, fileName, lineNumber, window.__trackets_last_error && window.__trackets_last_error.stack);
-}
-
-/*
- * Error objects in try/catch are stored and rethrown, in order to capture
- * the filename and a line number along with the stacktrace. The stored error
- * is then handled by window.onerror callback.
- */
-function storeErrorObject(e) {
-  window.__trackets_last_error = e;
-  throw e;
-}
-
-function isNative(f) {
-  return f && /native code/.test(f.toString());
-}
-
-function throwIfMissing(condition, message) {
-  if (!condition) {
-    throw new Error("Assertion Error: " + message);
-  }
-}
 
 // window.__trackets_mock_send_request = function(url, data) {
 //   console.group("Error report");

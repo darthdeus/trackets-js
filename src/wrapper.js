@@ -26,6 +26,10 @@ function wrap(f, handler) {
   return wrappedFunction;
 }
 
+function isNative(f) {
+  return f && /native code/.test(f.toString());
+}
+
 function wrapListenerHandlers(object, handler) {
   var originalAdd = object.addEventListener,
       originalRemove = object.removeEventListener;
@@ -72,8 +76,8 @@ function wrapEventHandlers(handler) {
   }
 }
 
-function wrapAll(handler) {
+function wrapAll(handler, errorHandler) {
   wrapTimeout(window, handler);
   document.addEventListener("DOMContentLoaded", function() { wrapEventHandlers(handler); });
-  window.onerror = tracketsOnError;
+  window.onerror = errorHandler;
 }
