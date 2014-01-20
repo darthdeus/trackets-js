@@ -32,7 +32,7 @@ window["Trackets"] = {
 
     this.eventLog = [];
 
-    document.body.addEventListener("click", this.eventHandler(this));
+    document.addEventListener("click", this.eventHandler(this));
 
     if (options["api_base_url"] || window.__TRACKETS_DEBUG_MODE || options["debug_mode"]) {
       this.debug_mode = true;
@@ -205,14 +205,12 @@ function contentLoaded(win, fn) {
   }
 }
 
-contentLoaded(window, function() {
-  var script = document.querySelector("[data-trackets-customer]");
-  var attr;
+var script = document.querySelector("[data-trackets-customer]");
+var attr;
 
-  if (script) {
-    if (attr = script.attributes["data-trackets-customer"]) {
-      var t = window["Trackets"];
-      t["init"].call(t, { "api_key": attr.value });
-    }
+if (script) {
+  if (attr = script.attributes["data-trackets-customer"]) {
+    var t = window["Trackets"];
+    t["init"].call(t, { "api_key": attr.value });
   }
-});
+}
