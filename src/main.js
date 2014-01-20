@@ -175,7 +175,7 @@ function throwIfMissing(condition, message) {
 
 // @win window reference
 // @fn function reference
-function contentLoaded (win, fn) {
+function contentLoaded(win, fn) {
   var done = false, top = true,
 
   doc = win.document, root = doc.documentElement,
@@ -207,7 +207,7 @@ function contentLoaded (win, fn) {
   }
 }
 
-window["contentLoaded"](window, function() {
+contentLoaded(window, function() {
   var script = document.querySelector("[data-trackets-customer]");
   var attr;
 
