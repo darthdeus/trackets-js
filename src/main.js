@@ -114,7 +114,7 @@ window["Trackets"] = {
     return data;
   },
 
-  notify: function(message, filename, lineNumber, stack) {
+  "notify": function(message, filename, lineNumber, stack) {
     throwIfMissing(this.api_key, "api_key is required");
 
     data = this.serialize(message, filename, lineNumber, stack);
