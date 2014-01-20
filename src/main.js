@@ -17,7 +17,9 @@ var TRACKETS_LOCALSTORAGE_KEY = "__trackets_localstorage_guid";
 
 window["Trackets"] = {
   "init": function(options) {
+    console.log("init called");
     if (this.__init_done) return; // allow only one init
+    console.log("init not skipped");
 
     options = options || {};
     this.throwIfMissing(options["api_key"], "api_key is required.");
