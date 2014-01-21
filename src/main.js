@@ -65,9 +65,9 @@ window["Trackets"] = {
   },
 
   forceTick: function() {
-    console.group("Force tick");
+    // console.group("Force tick");
     this.queue.tick();
-    console.groupEnd();
+    // console.groupEnd();
   },
 
   workerTick: function(self) {
