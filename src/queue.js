@@ -38,7 +38,7 @@ function Queue(interval, key) {
   });
 
   this.tick = function() {
-    stream.push("tick-tick");
+    stream.push("tick");
   };
 
   this.start = function() {
