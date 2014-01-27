@@ -77,7 +77,15 @@ window["Trackets"] = {
       if (typeof window.__trackets_mock_send_request === "function") {
         window.__trackets_mock_send_request(self.report_url, JSON.parse(item[1]));
       } else {
-        sendRequest.apply(self, item);
+        if (typeof navigator.onLine === "boolean") {
+          if (navigator.onLine) {
+            sendRequest.apply(self, item);
+          } else {
+            Trackets.log("User offline, delaying error request");
+          }
+        } else {
+          sendRequest.apply(self, item);
+        }
       }
     };
   },

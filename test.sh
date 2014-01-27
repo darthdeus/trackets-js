@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo "Starting ASDF"
+echo "Starting web server"
 asdf 1>&2 2> /dev/null &
-echo "waiting 2 seconds"
+echo "Waiting for the server to start up"
 sleep 2
 SERVER=$!
 
