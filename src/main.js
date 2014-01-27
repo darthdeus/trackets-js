@@ -39,6 +39,8 @@ window["Trackets"] = {
       this.log("You're running Trackets in development mode. Define `window.__trackets_mock_send_request` to override error reports to production API.");
     }
 
+    this.pageLoadTimestamp = +new Date();
+
     this.api_base_url = options["api_base_url"] || "http://beta.trackets.com";
     this.report_url = this.api_base_url + "/reports";
 
@@ -115,7 +117,8 @@ window["Trackets"] = {
         "custom_data": this.custom_data,
         "guid": this.guid,
         "event_log": this.eventLog,
-        "timestamp": new Date().getTime()
+        "timestamp": new Date().getTime(),
+        "page_load_timestamp": this.pageLoadTimestamp
       }
     };
 
