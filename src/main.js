@@ -206,11 +206,11 @@ function contentLoaded(win, fn) {
   }
 }
 
-var script = document.querySelector("[data-trackets-key");
+var script = document.querySelector("[data-trackets-key") || document.querySelector("[data-trackets-customer");
 var attr;
 
 if (script) {
-  if (attr = script.attributes["data-trackets-key"]) {
+  if (attr = script.attributes["data-trackets-key"] || script.attributes["data-trackets-customer"]) {
     var t = window["Trackets"];
     t["init"].call(t, { "api_key": attr.value });
   }
