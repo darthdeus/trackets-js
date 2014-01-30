@@ -206,11 +206,11 @@ function contentLoaded(win, fn) {
   }
 }
 
-var script = document.querySelector("[data-trackets-customer]");
+var script = document.querySelector("[data-trackets-key");
 var attr;
 
 if (script) {
-  if (attr = script.attributes["data-trackets-customer"]) {
+  if (attr = script.attributes["data-trackets-key"]) {
     var t = window["Trackets"];
     t["init"].call(t, { "api_key": attr.value });
   }
