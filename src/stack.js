@@ -66,3 +66,13 @@ function normalizeStack(stack) {
     return joinParsedStack(parseStack(stack));
   }
 }
+
+function expandError(error) {
+  var stack = parseStack(error.stack);
+  return {
+    file_name: stack[0].file,
+    line_number: stack[0].line,
+    message: error.message,
+    stack: error.stack
+  }
+}

@@ -64,3 +64,14 @@ test("(Chrome) Stacktrace normalization", function() {
 
 });
 
+test("Exception object can be parsed into file name, line number and message", function() {
+  try {
+    throw new Error("Something went wrong");
+  } catch (e) {
+    var res = expandError(e);
+
+    equal(res.file_name, "http://localhost:9292/test/stack_test.js");
+    equal(res.line_number, 69);
+    equal(res.message, "Something went wrong");
+  }
+});
