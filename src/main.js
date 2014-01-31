@@ -138,10 +138,31 @@ window["Trackets"] = {
   "notify": function(message, filename, lineNumber, stack) {
     this.throwIfMissing(this.api_key, "api_key is required");
 
+    if (typeof message === "object") {
+      var expanded = expandError(message);
+
+      var message = expanded.message,
+          filename = expanded.file,
+          lineNumber = expanded.line,
+          stack = expanded.stack;
+    }
+
     data = this.serialize(message, filename, lineNumber, stack);
 
     this.queue.push([this.report_url, JSON.stringify(data)]);
     this.forceTick();
+  },
+
+  "guard": function(f, context) {
+    try {
+      if (typeof context === "undefined") {
+        f.call(window);
+      } else {
+        f.apply(context, Array.prototype.slice.call(arguments, 2));
+      }
+    } catch (e) {
+      window["Trackets"]["notify"](e);
+    }
   },
 
   throwIfMissing: function(condition, message) {
@@ -218,7 +239,7 @@ var script = document.querySelector("[data-trackets-key") || document.querySelec
 var attr;
 
 if (script) {
-  if (attr = script.attributes["data-trackets-key"] || script.attributes["data-trackets-customer"]) {
+  if (attr = script.attributes["data-trackets-customer"]) {
     var t = window["Trackets"];
     t["init"].call(t, { "api_key": attr.value });
   }

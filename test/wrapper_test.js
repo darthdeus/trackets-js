@@ -31,6 +31,35 @@ test("wrapping a function with no handler simply re-throws the error", function(
   }
 });
 
+test("object can be wrapped", function() {
+  var obj = {
+    a: function() { throw new Error("a"); }
+  };
+
+  wrapObject(obj, function(e) {
+    equal(e.message, "a");
+  });
+
+  obj.a();
+});
+
+test("only given methods are wrapped", function() {
+  var obj = {
+    a: function() { throw new Error("a"); },
+    b: function() { throw new Error("b"); }
+  };
+
+  wrapObject(obj, function(e) {
+    throw new Error("Only given methods are wrapped, other ones are left alone");
+  }, ["a"]);
+
+  try {
+    obj.b();
+  } catch (e) {
+    equal(e.message, "b");
+  }
+})
+
 test("wrapped function can be given as a string, in which case it's evaled", function() {
   window.__global_function_name = function() { throw new Error("test error message"); }
   var wrapped = wrap("__global_function_name()");

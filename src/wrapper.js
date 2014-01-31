@@ -45,6 +45,20 @@ function wrapListenerHandlers(object, handler) {
   };
 }
 
+function wrapObject(object, handler, target) {
+  for (key in object) {
+    if (object.hasOwnProperty(key)) {
+      var val = object[key];
+
+      if (typeof val === "function") {
+        if (typeof target === "undefined" || target.length === 0 || target.indexOf(val.name) != -1) {
+          object[key] = wrap(val, handler);
+        }
+      }
+    }
+  }
+}
+
 function wrapTimeout(object, handler) {
   var oldTimeout = object.setTimeout,
       oldInterval = object.setInterval;
