@@ -166,7 +166,7 @@ window["Trackets"] = {
   },
 
   "guardObject": function(object, fields) {
-    wrapObject(object, window["Trackets"]["notify"], fields, context);
+    wrapObject(object, window["Trackets"]["notify"], fields, window["Trackets"]);
   },
 
   throwIfMissing: function(condition, message) {
