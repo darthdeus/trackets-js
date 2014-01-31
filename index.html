@@ -35,11 +35,6 @@
   <body>
     <button type="submit">Click on me</button>
     <script>
-      Trackets.init({ api_key: "d1c375ec17ec8335a9c177ace3d766e4" });
-
-      setTimeout(function() {
-        a();
-      }, 500);
 
       window.__trackets_mock_send_request = function(url, data) {
         console.group("Error report");
@@ -48,6 +43,21 @@
         console.log(data.error);
         console.groupEnd();
       }
+
+      // Trackets.init({ api_key: "d1c375ec17ec8335a9c177ace3d766e4" });
+
+      // setTimeout(function() {
+        // a();
+      // }, 500);
+
+      // var obj = {
+      //   a: function() { throw new Error("a"); },
+      //   b: function() { throw new Error("derper") }
+      // };
+      //
+      // Trackets.guardObject(obj, ["a"]);
+      //
+      // obj.a();
 
     </script>
   </body>

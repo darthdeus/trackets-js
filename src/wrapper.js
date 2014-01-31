@@ -1,6 +1,6 @@
 goog.provide("trackets.wrapper");
 
-function wrap(f, handler) {
+function wrap(f, handler, context) {
   if (f.isWrapped) {
     return f;
   }
@@ -14,7 +14,7 @@ function wrap(f, handler) {
     } catch (e) {
       // If there is no handler we simply re-throw the error
       if (typeof handler === "function") {
-        handler(e);
+        handler.call(context || this, e);
       } else {
         throw e;
       }
@@ -45,14 +45,23 @@ function wrapListenerHandlers(object, handler) {
   };
 }
 
-function wrapObject(object, handler, target) {
+/**
+ * Wraps a given object so that all of it's methods have their exceptions handled
+ * by the given handler.
+ *
+ * @param object - Object to be wrapped.
+ * @param handler - Exception handler to be called when an exception is caught.
+ * @param fields [optional] - Whitelist of fields that should be wrapped. If not given
+ *                            or empty every field that is a function will be wrapped
+ */
+function wrapObject(object, handler, fields, context) {
   for (key in object) {
     if (object.hasOwnProperty(key)) {
       var val = object[key];
 
       if (typeof val === "function") {
-        if (typeof target === "undefined" || target.length === 0 || target.indexOf(val.name) != -1) {
-          object[key] = wrap(val, handler);
+        if (typeof fields === "undefined" || fields.length === 0 || fields.indexOf(val.name || key) != -1) {
+          object[key] = wrap(val, handler, context);
         }
       }
     }

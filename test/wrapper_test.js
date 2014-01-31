@@ -31,6 +31,20 @@ test("wrapping a function with no handler simply re-throws the error", function(
   }
 });
 
+test("wrap can take a context for the handler", function() {
+  var context = { name: "test name" };
+
+  var handler = function() {
+    equal(this.name, "test name");
+  };
+
+  var f = function() { throw new Error("test error"); }
+
+  wrapped = wrap(f, handler, context);
+
+  wrapped();
+});
+
 test("object can be wrapped", function() {
   var obj = {
     a: function() { throw new Error("a"); }
@@ -59,6 +73,22 @@ test("only given methods are wrapped", function() {
     equal(e.message, "b");
   }
 })
+
+test("handler can have a context", function() {
+  var context = { name: "test name" };
+
+  var handler = function() {
+    equal(this.name, "test name");
+  };
+
+  var obj = {
+    a: function() { throw new Error("test error"); }
+  };
+
+  wrapObject(obj, handler, [], context);
+
+  obj.a();
+});
 
 test("wrapped function can be given as a string, in which case it's evaled", function() {
   window.__global_function_name = function() { throw new Error("test error message"); }

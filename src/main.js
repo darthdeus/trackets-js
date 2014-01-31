@@ -165,6 +165,10 @@ window["Trackets"] = {
     }
   },
 
+  "guardObject": function(object, fields) {
+    wrapObject(object, window["Trackets"]["notify"], fields, context);
+  },
+
   throwIfMissing: function(condition, message) {
     if (!condition) {
       throw new Error("Assertion Error: " + message);
