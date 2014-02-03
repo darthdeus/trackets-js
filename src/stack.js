@@ -1,12 +1,14 @@
 goog.provide("trackets.stack");
 
 var CHROME_REGEX = / *at (\S+) \((.+?):(\d+):(\d+)\)/;
+var CHROME_ANONYMOUS_REGEX = / * at (\<anonymous\>)():(\d+):(\d+)/;
 
-// Safari and Firefox use the same format for stacktraces,
-// hence we can use the same regex for both
-var FIREFOX_AND_SAFARI_REGEX = / *(\w+)@(.+):(\d+):?(\d?)/;
+var SAFARI_REGEX = / *(\w+@)?(.+):(\d+):(\d+)/;
 
-var PARSERS = [FIREFOX_AND_SAFARI_REGEX, CHROME_REGEX];
+// Like SAFARI but without column number
+var FIREFOX_REGEX = / *(\w?)@(.+):(\d+)/;
+
+var PARSERS = [CHROME_ANONYMOUS_REGEX, CHROME_REGEX, SAFARI_REGEX, FIREFOX_REGEX];
 
 /**
  * Match stacktrace line against all available regular expressions for
@@ -31,12 +33,22 @@ function parseStack(stack) {
   var results = [];
   for (var i = 0; i < lines.length; i++) {
     var match = matchStackLine(lines[i]);
+
     if (match) {
+      var column = match[4];
+      var function_name = match[1];
+      if(!column) { column = undefined; }
+      if(!function_name) {
+        function_name = undefined;
+      } else {
+        function_name = function_name.replace(new RegExp("@$"), "");
+      }
+
       results.push({
-        "function": match[1],
+        "function": function_name,
         "file": match[2],
         "line": match[3],
-        "column": match[4]
+        "column": column
       });
     }
   }
@@ -51,7 +63,13 @@ function joinParsedStack(lines) {
 
   for (var i = 0; i < lines.length; i++) {
     var line = lines[i];
-    var joinedLine = line["function"] + " at " + line["file"] + ":" + line["line"];
+    var joinedLine = line["function"];
+
+    if(line["file"]) {
+      joinedLine += " at " + line["file"];
+    }
+
+    joinedLine += ":" + line["line"];
 
     if(line["column"]) {
       joinedLine += ":" + line["column"];
@@ -76,9 +94,11 @@ function normalizeStack(stack) {
 
 function expandError(error) {
   var stack = parseStack(error.stack);
+
   return {
     file: stack[0].file,
     line: stack[0].line,
+    column: stack[0].column || error.columnNumber,
     message: error.message,
     stack: error.stack
   }

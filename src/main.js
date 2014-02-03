@@ -110,13 +110,14 @@ window["Trackets"] = {
     Serialize all browser data about the client session
     into a single data object.
     */
-  serialize: function(message, fileName, lineNumber, stack) {
+  serialize: function(message, fileName, lineNumber, columnNumber, stack) {
     var data = {
       "api_key": this.api_key,
       "error": {
         "message": message,
         "file_name": fileName,
         "line_number": lineNumber,
+        "column_number": columnNumber,
         "url": document.location.href,
         "user_agent": navigator.userAgent,
         "stacktrace": normalizeStack(stack), // TODO - check if this is null sometimes?
@@ -144,10 +145,11 @@ window["Trackets"] = {
       var message = expanded.message,
           filename = expanded.file,
           lineNumber = expanded.line,
+          columnNumber = expanded.column,
           stack = expanded.stack;
     }
 
-    data = this.serialize(message, filename, lineNumber, stack);
+    data = this.serialize(message, filename, lineNumber, columnNumber, stack);
 
     this.queue.push([this.report_url, JSON.stringify(data)]);
     this.forceTick();
