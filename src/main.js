@@ -239,7 +239,7 @@ function contentLoaded(win, fn) {
   }
 }
 
-var script = document.querySelector("[data-trackets-key") || document.querySelector("[data-trackets-customer");
+var script = document.querySelector("[data-trackets-key]") || document.querySelector("[data-trackets-customer]");
 var attr;
 
 if (script) {
