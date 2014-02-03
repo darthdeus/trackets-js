@@ -1,10 +1,10 @@
 goog.provide("trackets.stack");
 
-var CHROME_REGEX = / *at (\S+) \((.+?):(\d+):\d+\)/;
+var CHROME_REGEX = / *at (\S+) \((.+?):(\d+):(\d+)\)/;
 
 // Safari and Firefox use the same format for stacktraces,
 // hence we can use the same regex for both
-var FIREFOX_AND_SAFARI_REGEX = / *(\w+)@(.+):(\d+)/;
+var FIREFOX_AND_SAFARI_REGEX = / *(\w+)@(.+):(\d+):?(\d?)/;
 
 var PARSERS = [FIREFOX_AND_SAFARI_REGEX, CHROME_REGEX];
 
@@ -35,7 +35,8 @@ function parseStack(stack) {
       results.push({
         "function": match[1],
         "file": match[2],
-        "line": match[3]
+        "line": match[3],
+        "column": match[4]
       });
     }
   }
@@ -50,7 +51,13 @@ function joinParsedStack(lines) {
 
   for (var i = 0; i < lines.length; i++) {
     var line = lines[i];
-    results.push(line["function"] + " at " + line["file"] + ":" + line["line"]);
+    var joinedLine = line["function"] + " at " + line["file"] + ":" + line["line"];
+
+    if(line["column"]) {
+      joinedLine += ":" + line["column"];
+    }
+
+    results.push(joinedLine);
   }
 
   return results.join("\n");
