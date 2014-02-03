@@ -35,17 +35,17 @@ test("(Chrome) A whole stacktrace is parsed properly", function() {
 });
 
 
-//test("(Chrome) A whole stacktrace is parsed", function() {
-  //var stack = "Error: test error\n" +
-    //"    at <anonymous>:2:13\n" +
-    //"    at Object.InjectedScript._evaluateOn (<anonymous>:581:39)\n" +
-    //"    at Object.InjectedScript._evaluateAndWrap (<anonymous>:540:52)\n" +
-    //"    at Object.InjectedScript.evaluate (<anonymous>:459:21)";
+test("(Chrome) A whole stacktrace is parsed", function() {
+  var stack = "Error: test error\n" +
+    "    at <anonymous>:2:13\n" +
+    "    at Object.InjectedScript._evaluateOn (<anonymous>:581:39)\n" +
+    "    at Object.InjectedScript._evaluateAndWrap (<anonymous>:540:52)\n" +
+    "    at Object.InjectedScript.evaluate (<anonymous>:459:21)";
 
-  //var parsed = parseStack(stack);
-  //equal(parsed.length, 4, "Only relevant lines are parsed");
-  //equal(parsed[0]["line"], "2", "Line numbers are parsed properly");
-//});
+  var parsed = parseStack(stack);
+  equal(parsed.length, 4, "Only relevant lines are parsed");
+  equal(parsed[0]["line"], "2", "Line numbers are parsed properly");
+});
 
 
 test("(Chrome) Stacktrace normalization", function() {
