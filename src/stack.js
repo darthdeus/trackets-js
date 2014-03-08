@@ -31,6 +31,7 @@ function matchStackLine(line) {
 function parseStack(stack) {
   var lines = stack.split("\n");
   var results = [];
+
   for (var i = 0; i < lines.length; i++) {
     var match = matchStackLine(lines[i]);
 
@@ -52,6 +53,7 @@ function parseStack(stack) {
       });
     }
   }
+
   return results;
 }
 
@@ -95,11 +97,18 @@ function normalizeStack(stack) {
 function expandError(error) {
   var stack = parseStack(error.stack);
 
-  return {
-    file: stack[0].file,
-    line: stack[0].line,
-    column: stack[0].column || error.columnNumber,
-    message: error.message,
-    stack: error.stack
+  if (stack[0]) {
+    return {
+      file: stack[0].file,
+      line: stack[0].line,
+      column: stack[0].column || error.columnNumber,
+      message: error.message,
+      stack: error.stack
+    }
+  } else {
+    // TODO - check if this should ever happen and maybe
+    // raise an exception instead?
+    return {};
   }
+
 }
