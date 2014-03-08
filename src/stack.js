@@ -2,13 +2,20 @@ goog.provide("trackets.stack");
 
 var CHROME_REGEX = / *at (\S+) \((.+?):(\d+):(\d+)\)/;
 var CHROME_ANONYMOUS_REGEX = / * at (\<anonymous\>)():(\d+):(\d+)/;
+var PHANTOM_REGEX = /()  *at (\S+):(\d+)/;
+var PHANTOM_REGEX_ALT = /()  *at process \((\S+):(\d+)\)/;
 
 var SAFARI_REGEX = / *(\w+@)?(.+):(\d+):(\d+)/;
 
 // Like SAFARI but without column number
 var FIREFOX_REGEX = / *(\w?)@(.+):(\d+)/;
 
-var PARSERS = [CHROME_ANONYMOUS_REGEX, CHROME_REGEX, SAFARI_REGEX, FIREFOX_REGEX];
+var PARSERS = [CHROME_ANONYMOUS_REGEX,
+               CHROME_REGEX,
+               SAFARI_REGEX,
+               FIREFOX_REGEX,
+               PHANTOM_REGEX,
+               PHANTOM_REGEX_ALT];
 
 /**
  * Match stacktrace line against all available regular expressions for

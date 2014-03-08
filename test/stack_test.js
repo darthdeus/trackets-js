@@ -9,6 +9,20 @@ function parseLineExpectation(line, functionName, file, lineNumber) {
   equal(match[3], lineNumber);
 };
 
+
+test("(PhantomJS) A whole stacktrace is parsed properly", function() {
+  var stack = "Error: Something went wrong\n" +
+    "    at http://localhost:9292/test/stack_test.js:70\n" +
+    "    at http://localhost:9292/lib/qunit.js:1239\n" +
+    "    at http://localhost:9292/lib/qunit.js:1399\n" +
+    "    at process (http://localhost:9292/lib/qunit.js:952)\n" +
+    "    at http://localhost:9292/lib/qunit.js:185";
+
+  var parsed = parseStack(stack);
+
+  equal(parsed.length, 5, "Stacktrace contains 5 lines");
+});
+
 test("(Chrome) Single stacktrace lines should be parsed properly", function() {
   parseLineExpectation("    at Object.InjectedScript._evaluateOn (<anonymous>:581:39)",
                        "Object.InjectedScript._evaluateOn",
@@ -72,7 +86,7 @@ test("Exception object can be parsed into file name, line number and message", f
     var res = expandError(e);
 
     equal(res.file, "http://localhost:9292/test/stack_test.js");
-    equal(res.line, 70);
+    equal(res.line, 84);
     equal(res.message, "Something went wrong");
   }
 });
