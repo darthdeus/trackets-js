@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 echo "Starting web server"
 asdf 1>&2 2> /dev/null &
@@ -25,5 +24,8 @@ fi
 
 echo "Running tests"
 phantomjs runner.js http://localhost:9292/qunit.html
+STATUS=$?
 
 kill -15 $SERVER
+
+exit $STATUS
