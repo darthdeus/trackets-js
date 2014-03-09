@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 echo "Starting web server"
 asdf 1>&2 2> /dev/null &
