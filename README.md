@@ -1,7 +1,7 @@
 # Running tests
 
-    $ asdf
-    $ open http://localhost:9292/qunit.html
+    $ npm install -g karma-qunit
+    $ karma start
 
 You can also run tests headlessly via `./test.sh`, which requires
 Phantom.js to be installed.

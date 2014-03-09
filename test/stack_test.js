@@ -85,7 +85,7 @@ test("Exception object can be parsed into file name, line number and message", f
   } catch (e) {
     var res = expandError(e);
 
-    equal(res.file, "http://localhost:9292/test/stack_test.js");
+    equal(res.file.split("?")[0], "http://localhost:9876/base/test/stack_test.js");
     equal(res.line, 84);
     equal(res.message, "Something went wrong");
   }

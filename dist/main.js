@@ -102,9 +102,11 @@ function Queue(interval, key) {
 ;goog.provide("trackets.stack");
 var CHROME_REGEX = / *at (\S+) \((.+?):(\d+):(\d+)\)/;
 var CHROME_ANONYMOUS_REGEX = / * at (\<anonymous\>)():(\d+):(\d+)/;
+var PHANTOM_REGEX = /()  *at (\S+):(\d+)/;
+var PHANTOM_REGEX_ALT = /()  *at process \((\S+):(\d+)\)/;
 var SAFARI_REGEX = / *(\w+@)?(.+):(\d+):(\d+)/;
 var FIREFOX_REGEX = / *(\w?)@(.+):(\d+)/;
-var PARSERS = [CHROME_ANONYMOUS_REGEX, CHROME_REGEX, SAFARI_REGEX, FIREFOX_REGEX];
+var PARSERS = [CHROME_ANONYMOUS_REGEX, CHROME_REGEX, SAFARI_REGEX, FIREFOX_REGEX, PHANTOM_REGEX, PHANTOM_REGEX_ALT];
 function matchStackLine(line) {
   var match;
   for(var i = 0;i < PARSERS.length;i++) {
@@ -158,7 +160,11 @@ function normalizeStack(stack) {
 }
 function expandError(error) {
   var stack = parseStack(error.stack);
-  return{file:stack[0].file, line:stack[0].line, column:stack[0].column || error.columnNumber, message:error.message, stack:error.stack}
+  if(stack[0]) {
+    return{file:stack[0].file, line:stack[0].line, column:stack[0].column || error.columnNumber, message:error.message, stack:error.stack}
+  }else {
+    return{}
+  }
 }
 ;goog.provide("trackets.stream");
 function Stream() {
