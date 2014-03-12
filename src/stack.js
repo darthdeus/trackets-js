@@ -107,11 +107,11 @@ function expandError(error) {
   if (stack[0]) {
     return {
       file: stack[0].file,
-      line: stack[0].line,
-      column: stack[0].column || error.columnNumber,
+      line: stack[0]["line"],
+      column: stack[0]["column"] || error.columnNumber,
       message: error.message,
       stack: error.stack
-    }
+    };
   } else {
     // TODO - check if this should ever happen and maybe
     // raise an exception instead?
