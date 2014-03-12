@@ -48,7 +48,6 @@ test("(Chrome) A whole stacktrace is parsed properly", function() {
   equal(parsed[0]["function"], "b", "Function names are parsed properly");
 });
 
-
 test("(Chrome) A whole stacktrace is parsed", function() {
   var stack = "Error: test error\n" +
     "    at <anonymous>:2:13\n" +
@@ -86,7 +85,7 @@ test("Exception object can be parsed into file name, line number and message", f
     var res = expandError(e);
 
     equal(res.file.split("?")[0], "http://localhost:9876/base/test/stack_test.js");
-    equal(res.line, 84);
+    equal(res.line, 83);
     equal(res.message, "Something went wrong");
   }
 });
@@ -118,4 +117,19 @@ test("(Safari) Error outside of the method is parsed properly", function() {
   equal(parsed[0]["line"], "1", "Line numbers are parsed properly");
   equal(parsed[0]["column"], 97, "It will parse column number from stacktrace");
   equal(parsed[0]["function"], undefined, "Function will be undefined");
+});
+
+test("(Chrome) A whole stacktrace is parsed", function() {
+  var stack = "ReferenceError: thisIzerror is not defined\n" +
+              "    at HTMLDocument.<anonymous> (http://trackets.dev/error.min.js:1:86)\n" +
+              "    at n (http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js:2:14784)\n" +
+              "    at Object.o.fireWith (http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js:2:15553)\n" +
+              "    at Function.e.extend.ready (http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js:2:9773)\n" +
+              "    at HTMLDocument.c.addEventListener.B (http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js:2:14348)";
+
+  var e = { stack: stack };
+  var res = expandError(e);
+
+  equal(res.line, 1);
+  equal(res.column, 86);
 });
