@@ -30,6 +30,8 @@ window["Trackets"] = {
 
     this.eventLog = [];
 
+    this.pushEvent("page-loaded", {});
+
     document.addEventListener("click", this.eventHandler(this));
 
     if (options["api_base_url"] || window.__TRACKETS_DEBUG_MODE || options["debug_mode"]) {
@@ -98,11 +100,7 @@ window["Trackets"] = {
 
   eventHandler: function(context) {
     return function(event) {
-      context.eventLog.push({
-        "type": "event-click",
-        "html": event.target.outerHTML,
-        "timestamp": +new Date()
-      });
+      context.pushEvent("event-click", { "html": event.target.outerHTML });
     };
   },
 
@@ -151,6 +149,7 @@ window["Trackets"] = {
 
     data = this.serialize(message, filename, lineNumber, columnNumber, stack);
 
+    this.pushEvent("error", { "message": message });
     this.queue.push([this.report_url, JSON.stringify(data)]);
     this.forceTick();
   },
@@ -169,6 +168,14 @@ window["Trackets"] = {
 
   "guardObject": function(object, fields) {
     wrapObject(object, window["Trackets"]["notify"], fields, window["Trackets"]);
+  },
+
+  pushEvent: function(type, data) {
+    var result = JSON.parse(JSON.stringify(data));
+    result["type"] = type;
+    result["timestamp"] = +new Date();
+
+    this.eventLog.push(result);
   },
 
   throwIfMissing: function(condition, message) {
