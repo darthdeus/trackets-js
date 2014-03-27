@@ -12,6 +12,7 @@ goog.require("trackets.stack");
 goog.require("trackets.stream");
 goog.require("trackets.wrapper");
 goog.require("trackets.ajax");
+goog.require("trackets.eventLog");
 
 var TRACKETS_LOCALSTORAGE_KEY = "__trackets_localstorage_guid";
 
@@ -28,7 +29,9 @@ window["Trackets"] = {
     this.callback = options["callback"];
     this.tick = options["tick"];
 
-    this.eventLog = [];
+    this.eventLog = new EventLog();
+
+    this.eventLog.push("page-loaded", {});
 
     document.addEventListener("click", this.eventHandler(this));
 
@@ -98,11 +101,7 @@ window["Trackets"] = {
 
   eventHandler: function(context) {
     return function(event) {
-      context.eventLog.push({
-        "type": "event-click",
-        "html": event.target.outerHTML,
-        "timestamp": +new Date()
-      });
+      context.eventLog.push("event-click", { "html": event.target.outerHTML });
     };
   },
 
@@ -123,7 +122,7 @@ window["Trackets"] = {
         "stacktrace": normalizeStack(stack), // TODO - check if this is null sometimes?
         "custom_data": this.custom_data,
         "guid": this.guid,
-        "event_log": this.eventLog,
+        "event_log": this.eventLog.data,
         "timestamp": new Date().getTime(),
         "page_load_timestamp": this.pageLoadTimestamp
       }
@@ -151,6 +150,7 @@ window["Trackets"] = {
 
     data = this.serialize(message, filename, lineNumber, columnNumber, stack);
 
+    this.eventLog.push("error", { "message": message });
     this.queue.push([this.report_url, JSON.stringify(data)]);
     this.forceTick();
   },

@@ -1,10 +1,10 @@
 # Running tests
 
-    $ npm install -g karma-qunit
+    $ npm install -g karma karma-qunit
     $ karma start
 
-You can also run tests headlessly via `./test.sh`, which requires
-Phantom.js to be installed.
+Next open up [http://localhost:9876](http://localhost:9876) and watch
+the tests pass!
 
 # Building
 
