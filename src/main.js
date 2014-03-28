@@ -18,7 +18,11 @@ var TRACKETS_LOCALSTORAGE_KEY = "__trackets_localstorage_guid";
 
 window["Trackets"] = {
   "init": function(options) {
-    if (this.__init_done) return; // allow only one init
+    // Only one call to init is allowed.
+    if (this.__init_done) {
+      console.warn("Trackets was initialized twice, please check our user guide http://trackets.com/user_guide");
+      return;
+    }
 
     options = options || {};
     this.throwIfMissing(options["api_key"], "api_key is required.");
@@ -37,7 +41,11 @@ window["Trackets"] = {
 
     if (options["api_base_url"] || window.__TRACKETS_DEBUG_MODE || options["debug_mode"]) {
       this.debug_mode = true;
-      this.log("You're running Trackets in development mode. Define `window.__trackets_mock_send_request` to override error reports to production API.");
+      if (typeof window.__trackets_mock_send_request === "function") {
+        this.log("You're running Trackest in development mode.");
+      } else {
+        this.log("You're running Trackets in development mode. Define `window.__trackets_mock_send_request` to override error reports to production API.");
+      }
     }
 
     this.pageLoadTimestamp = +new Date();
