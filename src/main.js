@@ -178,8 +178,14 @@ window["Trackets"] = {
   },
 
   onErrorHandler: function(message, fileName, lineNumber) {
-    var actualMessage = (window.__trackets_last_error && window.__trackets_last_error.message) || message;
-    window["Trackets"]["notify"](actualMessage, fileName, lineNumber, window.__trackets_last_error && window.__trackets_last_error.stack);
+    var REGEXP = new RegExp("/assets.trackets.com/client.js");
+
+    if (REGEXP.test(fileName) || fileName == "http://localhost:9292/dist/main.js") {
+      Trackets.log("Ignoring error raised in trackets source code")
+    } else {
+      var actualMessage = (window.__trackets_last_error && window.__trackets_last_error.message) || message;
+      window["Trackets"]["notify"](actualMessage, fileName, lineNumber, window.__trackets_last_error && window.__trackets_last_error.stack);
+    }
   }
 };
 
