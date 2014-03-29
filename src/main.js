@@ -186,7 +186,7 @@ window["Trackets"] = {
   },
 
   onErrorHandler: function(message, fileName, lineNumber) {
-    var REGEXP = new RegExp("/assets.trackets.com/client.js");
+    var REGEXP = new RegExp("trackets.s3.amazonaws.com/client.js");
 
     if (REGEXP.test(fileName) || fileName == "http://localhost:9292/dist/main.js") {
       Trackets.log("Ignoring error raised in trackets source code")
