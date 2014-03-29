@@ -156,6 +156,14 @@ window["Trackets"] = {
           stack = expanded.stack;
     }
 
+    if (typeof filename === "undefined") {
+      filename = "test.js";
+    }
+
+    if (typeof lineNumber === "undefined") {
+      lineNumber = 1;
+    }
+
     data = this.serialize(message, filename, lineNumber, columnNumber, stack);
 
     this.eventLog.push("error", { "message": message });
