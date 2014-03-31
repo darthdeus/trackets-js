@@ -6,7 +6,7 @@ function EventLog() {
   this.push = function(event, data) {
     var result = data ? JSON.parse(JSON.stringify(data)) : {};
 
-    result["event"] = event;
+    result["type"] = event;
     result["timestamp"] = +new Date();
 
     this.data.push(result);

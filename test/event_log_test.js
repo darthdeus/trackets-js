@@ -6,7 +6,7 @@ test("it accepts event name and data object", function() {
 
   var item = log.data[0];
 
-  equal(item.event, "some-event", "Event name is passed properly");
+  equal(item.type, "some-event", "Event name is passed properly");
   ok(Math.abs(item.timestamp - +new Date()) < 1000);
 });
 
@@ -16,7 +16,7 @@ test("perserves the original data", function() {
 
   var item = log.data[0];
 
-  equal(item.event, "some-event", "Event name is passed properly");
+  equal(item.type, "some-event", "Event name is passed properly");
   equal(item.foo, "bar", "Original data attributes are perserved");
   ok(Math.abs(item.timestamp - +new Date()) < 1000);
 });
