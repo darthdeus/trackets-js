@@ -36,12 +36,30 @@ function wrapListenerHandlers(object, handler) {
 
   object.addEventListener = function(type, listener, useCapture) {
     originalRemove.call(this, type, listener, useCapture);
-    return originalAdd.call(this, type, wrap(listener, handler), useCapture);
+
+    var wrapped;
+
+    if (typeof listener === "object") {
+      var wrapped = wrapObject(listener, handler, "handleEvent");
+    } else {
+      wrapped = wrap(listener, handler);
+    }
+
+    return originalAdd.call(this, type, wrapped, useCapture);
   };
 
   object.removeEventListener = function(type, listener, useCapture) {
     originalRemove.call(this, type, listener, useCapture);
-    return originalRemove.call(this, type, wrap(listener, handler), useCapture);
+
+    var wrapped;
+
+    if (typeof listener === "object") {
+      var wrapped = wrapObject(listener, handler, "handleEvent");
+    } else {
+      wrapped = wrap(listener, handler);
+    }
+
+    return originalRemove.call(this, type, wrapped, useCapture);
   };
 }
 
