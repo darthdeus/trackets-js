@@ -45,7 +45,7 @@ function wrapListenerHandlers(object, handler) {
     var wrapped;
 
     if (typeof listener === "object") {
-      var wrapped = wrapObject(listener, handler, "handleEvent");
+      wrapped = wrapObject(listener, handler, "handleEvent");
     } else {
       wrapped = wrap(listener, handler);
     }
@@ -59,7 +59,7 @@ function wrapListenerHandlers(object, handler) {
     var wrapped;
 
     if (typeof listener === "object") {
-      var wrapped = wrapObject(listener, handler, "handleEvent");
+      wrapped = wrapObject(listener, handler, "handleEvent");
     } else {
       wrapped = wrap(listener, handler);
     }
