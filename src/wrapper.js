@@ -10,6 +10,11 @@ function wrap(f, handler, context) {
       if (typeof f == "string") {
         f = new Function(f);
       }
+
+      if (typeof f != "function") {
+        return f;
+      }
+
       return f.apply(this, arguments);
     } catch (e) {
       // If there is no handler we simply re-throw the error
