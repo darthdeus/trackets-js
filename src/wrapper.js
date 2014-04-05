@@ -10,6 +10,11 @@ function wrap(f, handler, context) {
       if (typeof f == "string") {
         f = new Function(f);
       }
+
+      if (typeof f != "function") {
+        return f;
+      }
+
       return f.apply(this, arguments);
     } catch (e) {
       // If there is no handler we simply re-throw the error
@@ -36,12 +41,30 @@ function wrapListenerHandlers(object, handler) {
 
   object.addEventListener = function(type, listener, useCapture) {
     originalRemove.call(this, type, listener, useCapture);
-    return originalAdd.call(this, type, wrap(listener, handler), useCapture);
+
+    var wrapped;
+
+    if (typeof listener === "object") {
+      wrapped = wrapObject(listener, handler, "handleEvent");
+    } else {
+      wrapped = wrap(listener, handler);
+    }
+
+    return originalAdd.call(this, type, wrapped, useCapture);
   };
 
   object.removeEventListener = function(type, listener, useCapture) {
     originalRemove.call(this, type, listener, useCapture);
-    return originalRemove.call(this, type, wrap(listener, handler), useCapture);
+
+    var wrapped;
+
+    if (typeof listener === "object") {
+      wrapped = wrapObject(listener, handler, "handleEvent");
+    } else {
+      wrapped = wrap(listener, handler);
+    }
+
+    return originalRemove.call(this, type, wrapped, useCapture);
   };
 }
 
