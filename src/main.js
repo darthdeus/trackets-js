@@ -38,6 +38,7 @@ window["Trackets"] = {
     this.eventLog.push("page-loaded", {});
 
     if(document.addEventListener) document.addEventListener("click", this.eventHandler(this));
+    else document.attachEvent('onclick', this.eventHandler(this));
 
     if (options["api_base_url"] || window.__TRACKETS_DEBUG_MODE || options["debug_mode"]) {
       this.debug_mode = true;
@@ -108,8 +109,9 @@ window["Trackets"] = {
   },
 
   eventHandler: function(context) {
-    return function(event) {
-      context.eventLog.push("event-click", { "html": event.target.outerHTML });
+    return function(evt) {
+      var elem = evt.target || evt.srcElement;
+      context.eventLog.push("event-click", { "html": elem.outerHTML });
     };
   },
 
