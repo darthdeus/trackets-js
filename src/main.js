@@ -184,7 +184,11 @@ window["Trackets"] = {
     }
   },
 
-  "guardObject": function(object, fields) {
+  "wrap": function(f, context) {
+    wrap(f, window["Trackets"]["notify"], context);
+  },
+
+  "wrapObject": function(object, fields) {
     wrapObject(object, window["Trackets"]["notify"], fields, window["Trackets"]);
   },
 
