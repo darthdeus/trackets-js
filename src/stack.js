@@ -102,20 +102,19 @@ function normalizeStack(stack) {
 }
 
 function expandError(error) {
-  var stack = parseStack(error.stack);
+  var stack = parseStack(error.stack || "");
+
+  var ret = {
+    message: error.message,
+    stack: error.stack
+  };
 
   if (stack[0]) {
-    return {
-      file: stack[0].file,
-      line: stack[0]["line"],
-      column: stack[0]["column"] || error.columnNumber,
-      message: error.message,
-      stack: error.stack
-    };
-  } else {
-    // TODO - check if this should ever happen and maybe
-    // raise an exception instead?
-    return {};
+    ret["file"] = stack[0].file;
+    ret["line"] = stack[0]["line"];
+    ret["column"] = stack[0]["column"] || error.columnNumber;
+    return ret;
   }
 
+  return ret;
 }

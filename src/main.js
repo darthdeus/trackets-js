@@ -37,7 +37,7 @@ window["Trackets"] = {
 
     this.eventLog.push("page-loaded", {});
 
-    document.addEventListener("click", this.eventHandler(this));
+    if(document.addEventListener) document.addEventListener("click", this.eventHandler(this));
 
     if (options["api_base_url"] || window.__TRACKETS_DEBUG_MODE || options["debug_mode"]) {
       this.debug_mode = true;
@@ -103,7 +103,7 @@ window["Trackets"] = {
 
   log: function() {
     if (this.debug_mode && console && console.log) {
-      console.log.apply(console, arguments);
+      Function.prototype.apply.call(console.log, console, arguments);
     }
   },
 
