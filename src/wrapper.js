@@ -123,9 +123,10 @@ function wrapEventHandlers(handler) {
 }
 
 function wrapAll(handler, errorHandler) {
-  if(!document.addEventListener) return;
-
   wrapTimeout(window, handler);
-  document.addEventListener("DOMContentLoaded", function() { wrapEventHandlers(handler); });
+  var add = document.addEventListener || document.attachEvent,
+      pre = document.addEventListener ? "" : "on";
+
+  add(pre + "DOMContentLoaded", function() { wrapEventHandlers(handler); });
   window.onerror = errorHandler;
 }
