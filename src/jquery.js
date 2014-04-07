@@ -4,6 +4,7 @@ goog.provide("trackets.jquery");
 var isJqueryInit = false;
 function initJquery(errorHandler) {
   if(isJqueryInit) return true;
+  if(!window.jQuery || !window.jQuery.fn) return false;
 
   var _jQueryReady = jQuery.fn.ready;
   if(_jQueryReady) {
