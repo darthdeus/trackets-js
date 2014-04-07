@@ -110,8 +110,8 @@ window["Trackets"] = {
   },
 
   eventHandler: function(context) {
-    return function(evt) {
-      var elem = evt.target || evt.srcElement;
+    return function(event) {
+      var elem = event.target || event.srcElement;
       context.eventLog.push("event-click", { "html": elem.outerHTML });
     };
   },
