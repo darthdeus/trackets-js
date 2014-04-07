@@ -13,6 +13,7 @@ goog.require("trackets.stream");
 goog.require("trackets.wrapper");
 goog.require("trackets.ajax");
 goog.require("trackets.eventLog");
+goog.require("trackets.jquery");
 
 var TRACKETS_LOCALSTORAGE_KEY = "__trackets_localstorage_guid";
 
@@ -63,6 +64,10 @@ window["Trackets"] = {
     this.queue.start();
 
     this.__init_done = true;
+  },
+
+  "initJquery": function() {
+    return initJquery(this.onErrorHandler);
   },
 
   /*
