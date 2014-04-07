@@ -36,9 +36,10 @@ window["Trackets"] = {
     this.eventLog = new EventLog();
 
     this.eventLog.push("page-loaded", {});
+    var add = document.addEventListener || document.attachEvent,
+        pre = document.addEventListener ? "" : "on";
 
-    if(document.addEventListener) document.addEventListener("click", this.eventHandler(this));
-    else document.attachEvent('onclick', this.eventHandler(this));
+    add(pre + "click", this.eventHandler(this));
 
     if (options["api_base_url"] || window.__TRACKETS_DEBUG_MODE || options["debug_mode"]) {
       this.debug_mode = true;
