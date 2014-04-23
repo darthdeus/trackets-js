@@ -53,7 +53,7 @@ window["Trackets"] = {
 
     this.pageLoadTimestamp = +new Date();
 
-    this.api_base_url = options["api_base_url"] || "http://beta.trackets.com";
+    this.api_base_url = options["api_base_url"] || "https://trackets.com";
     this.report_url = this.api_base_url + "/reports";
 
     this.log("Initialized Trackets with API key:", this.api_key);
