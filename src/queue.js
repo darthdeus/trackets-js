@@ -5,7 +5,7 @@ goog.provide("trackets.queue");
  */
 function Queue(interval, key) {
   this.key = key;
-  this.interval = interval || 5000;
+  this.interval = interval || 20000;
 
   if (typeof this.key === "undefined") {
     this.q = [];
