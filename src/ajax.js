@@ -3,6 +3,7 @@ goog.provide("trackets.ajax");
 function sendRequest(url, postData) {
   var req = createXMLHTTPObject();
   if (!req) return;
+  if(postData.length > 100000) return;
 
   req.open("POST", url, true);
   req.setRequestHeader("Content-type", "application/json");
