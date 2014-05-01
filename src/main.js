@@ -34,7 +34,7 @@ window["Trackets"] = {
     this.callback = options["callback"];
     this.tick = options["tick"];
 
-    this.eventLog = new EventLog();
+    this.eventLog = new EventLog(45);
 
     this.eventLog.push("page-loaded", {});
     var add = document.addEventListener || document.attachEvent,
@@ -117,7 +117,7 @@ window["Trackets"] = {
   eventHandler: function(context) {
     return function(event) {
       var elem = event.target || event.srcElement;
-      context.eventLog.push("event-click", { "html": elem.outerHTML });
+      context.eventLog.push("event-click", { "html": elem.outerHTML.slice(0, 350) });
     };
   },
 
@@ -139,6 +139,7 @@ window["Trackets"] = {
         "custom_data": this.custom_data,
         "guid": this.guid,
         "event_log": this.eventLog.data,
+        "event_log_length": this.eventLog.data.length - 2,
         "timestamp": new Date().getTime(),
         "page_load_timestamp": this.pageLoadTimestamp,
         "language": navigator.browserLanguage || navigator.language || navigator.userLanguage

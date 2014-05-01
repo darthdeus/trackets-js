@@ -42,13 +42,13 @@
     <h1>I don't do anything</h1>
     <button type="submit">Click on me</button>
     <script>
-      // window.__trackets_mock_send_request = function(url, data) {
-      //   console.group("Error report");
-      //   console.log("URL:", url);
-      //   console.log("Stacktrace", data.error.stacktrace);
-      //   console.log(data.error);
-      //   console.groupEnd();
-      // }
+      window.__trackets_mock_send_request = function(url, data) {
+        console.group("Error report");
+        console.log("URL:", url);
+        console.log("Stacktrace", data.error.stacktrace);
+        console.log(data.error);
+        console.groupEnd();
+      }
 
       Trackets.init({
         api_key: "d1c375ec17ec8335a9c177ace3d766e4",
