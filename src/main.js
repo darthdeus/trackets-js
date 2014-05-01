@@ -139,6 +139,7 @@ window["Trackets"] = {
         "custom_data": this.custom_data,
         "guid": this.guid,
         "event_log": this.eventLog.data,
+        "event_log_count": this.eventLog.data.length - 2,
         "timestamp": new Date().getTime(),
         "page_load_timestamp": this.pageLoadTimestamp,
         "language": navigator.browserLanguage || navigator.language || navigator.userLanguage
