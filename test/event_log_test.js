@@ -53,7 +53,6 @@ test("can be limited", function() {
 
   // should be 4, since we always want to keep the first and last one
   equal(log.data.length, 4);
-  console.log(log.data[0]);
   equal(log.data[0].message, "first");
   equal(log.data[1].message, "fourth");
   equal(log.data[2].message, "fifth");
