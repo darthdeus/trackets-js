@@ -10,7 +10,7 @@ function EventLog(limit) {
     result["type"] = event;
     result["timestamp"] = +new Date();
 
-    if (this.data.length == this.limit) {
+    if (this.data.length >= this.limit) {
       var first = this.data[0];
       var newData = this.data.slice(2);
       newData.unshift(first);
