@@ -34,7 +34,7 @@ window["Trackets"] = {
     this.callback = options["callback"];
     this.tick = options["tick"];
 
-    this.eventLog = new EventLog();
+    this.eventLog = new EventLog(5);
 
     this.eventLog.push("page-loaded", {});
     var add = document.addEventListener || document.attachEvent,
