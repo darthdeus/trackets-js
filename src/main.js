@@ -117,7 +117,7 @@ window["Trackets"] = {
   eventHandler: function(context) {
     return function(event) {
       var elem = event.target || event.srcElement;
-      context.eventLog.push("event-click", { "html": elem.outerHTML });
+      context.eventLog.push("event-click", { "html": elem.outerHTML.slice(0, 350) });
     };
   },
 
