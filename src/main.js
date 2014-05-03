@@ -54,7 +54,7 @@ window["Trackets"] = {
     this.pageLoadTimestamp = +new Date();
 
     this.api_base_url = options["api_base_url"] || "https://trackets.com";
-    this.report_url = this.api_base_url + "/reports";
+    this.report_url = this.api_base_url + "/reports/" + this.api_key;
 
     this.log("Initialized Trackets with API key:", this.api_key);
 
@@ -127,7 +127,6 @@ window["Trackets"] = {
     */
   serialize: function(message, fileName, lineNumber, columnNumber, stack) {
     var data = {
-      "api_key": this.api_key,
       "error": {
         "message": message,
         "file_name": fileName,
