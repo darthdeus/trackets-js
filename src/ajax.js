@@ -13,7 +13,6 @@ function sendRequest(url, postData) {
   req.onreadystatechange = function(e) {
     if (req.readyState == 4) {
       if (req.status != 200 && req.status != 201) {
-        //Trackets.queue.push([url, postData]);
         console.log("Trackets failed to deliver the error report data.");
       }
     }
