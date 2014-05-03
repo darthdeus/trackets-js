@@ -10,7 +10,8 @@
     "gulp": "~3.2.4",
     "qunitjs": "^1.12.0",
     "karma-qunit": "^0.1.1",
-    "karma": "^0.12.14"
+    "karma": "^0.12.14",
+    "karma-phantomjs-launcher": "^0.1.4"
   },
   "devDependencies": {
     "gulp-closure-compiler": "~0.1.0"
