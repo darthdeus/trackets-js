@@ -1,5 +1,10 @@
 goog.provide("trackets.wrapper");
 
+function addHandler(name, fn) {
+  if(document.addEventListener) document.addEventListener(name, fn);
+  else document.attachEvent("on" + name, fn);
+}
+
 function wrap(f, handler, context) {
   if (f.isWrapped) {
     return f;
@@ -124,9 +129,11 @@ function wrapEventHandlers(handler) {
 
 function wrapAll(handler, errorHandler) {
   wrapTimeout(window, handler);
-  var add = document.addEventListener || document.attachEvent,
-      pre = document.addEventListener ? "" : "on";
 
-  add(pre + "DOMContentLoaded", function() { wrapEventHandlers(handler); });
+  addHandler("DOMContentLoaded", function() { wrapEventHandlers(handler); });
   window.onerror = errorHandler;
+}
+
+function wrapClick(eventHandler) {
+  addHandler("click", eventHandler);
 }

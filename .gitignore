@@ -1,2 +1,4 @@
 config/aws.yml
 dist/*
+node_modules/
+npm-debug.log
