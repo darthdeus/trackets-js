@@ -8,7 +8,6 @@ goog.provide("trackets.main");
 
 goog.require("trackets.guid");
 goog.require("trackets.queue");
-goog.require("trackets.stack");
 goog.require("trackets.stream");
 goog.require("trackets.wrapper");
 goog.require("trackets.ajax");
@@ -35,12 +34,9 @@ window["Trackets"] = {
     this.tick = options["tick"];
 
     this.eventLog = new EventLog(45);
-
     this.eventLog.push("page-loaded", {});
-    var add = document.addEventListener || document.attachEvent,
-        pre = document.addEventListener ? "" : "on";
 
-    add(pre + "click", this.eventHandler(this));
+    wrapClick(this.eventHandler(this));
 
     if (options["api_base_url"] || window.__TRACKETS_DEBUG_MODE || options["debug_mode"]) {
       this.debug_mode = true;
@@ -125,24 +121,19 @@ window["Trackets"] = {
     Serialize all browser data about the client session
     into a single data object.
     */
-  serialize: function(message, fileName, lineNumber, columnNumber, stack) {
+  serialize: function(error) {
+    error["url"] = document.location.href;
+    error["user_agent"] = navigator.userAgent;
+    error["custom_data"] = this.custom_data;
+    error["guid"] = this.guid;
+    error["event_log"] = this.eventLog.data;
+    error["event_log_length"] = this.eventLog.data.length - 2;
+    error["timestamp"] = new Date().getTime();
+    error["page_load_timestamp"] = this.pageLoadTimestamp;
+    error["language"] = navigator.browserLanguage || navigator.language || navigator.userLanguag;
+
     var data = {
-      "error": {
-        "message": message,
-        "file_name": fileName,
-        "line_number": lineNumber,
-        "column_number": columnNumber,
-        "url": document.location.href,
-        "user_agent": navigator.userAgent,
-        "stacktrace": normalizeStack(stack), // TODO - check if this is null sometimes?
-        "custom_data": this.custom_data,
-        "guid": this.guid,
-        "event_log": this.eventLog.data,
-        "event_log_length": this.eventLog.data.length - 2,
-        "timestamp": new Date().getTime(),
-        "page_load_timestamp": this.pageLoadTimestamp,
-        "language": navigator.browserLanguage || navigator.language || navigator.userLanguage
-      }
+      "error": error
     };
 
     if (this.callback) {
@@ -155,25 +146,24 @@ window["Trackets"] = {
   "notify": function(message, filename, lineNumber, stack) {
     this.throwIfMissing(this.api_key, "api_key is required");
 
+    var sourceURL, columnNumber;
+
     if (typeof message === "object") {
-      var expanded = expandError(message);
-
-      var message = expanded.message,
-          filename = expanded.file,
-          lineNumber = expanded.line,
-          columnNumber = expanded.column,
-          stack = expanded.stack;
+      var stack = message.stack,
+          columnNumber = message.columnNumber,
+          sourceURL = message.sourceURL,
+          filename = message.fileName,
+          message = message.message;
     }
 
-    if (typeof filename === "undefined") {
-      filename = "test.js";
-    }
-
-    if (typeof lineNumber === "undefined") {
-      lineNumber = 1;
-    }
-
-    data = this.serialize(message, filename, lineNumber, columnNumber, stack);
+    var data = this.serialize({
+      "message": message,
+      "file_name": filename,
+      "line_number": lineNumber,
+      "column_number": columnNumber,
+      "source_url": sourceURL,
+      "stacktrace": stack
+    });
 
     this.eventLog.push("error", { "message": message });
     this.queue.push([this.report_url, JSON.stringify(data)]);
@@ -221,56 +211,6 @@ window["Trackets"] = {
 //   console.log(data.error);
 //   console.groupEnd();
 // }
-
-
-/*!
- * contentloaded.js
- *
- * Author: Diego Perini (diego.perini at gmail.com)
- * Summary: cross-browser wrapper for DOMContentLoaded
- * Updated: 20101020
- * License: MIT
- * Version: 1.2
- *
- * URL:
- * http://javascript.nwbox.com/ContentLoaded/
- * http://javascript.nwbox.com/ContentLoaded/MIT-LICENSE
- *
- */
-
-// @win window reference
-// @fn function reference
-function contentLoaded(win, fn) {
-  var done = false, top = true,
-
-  doc = win.document, root = doc.documentElement,
-
-  add = doc.addEventListener ? "addEventListener" : "attachEvent",
-  rem = doc.addEventListener ? "removeEventListener" : "detachEvent",
-  pre = doc.addEventListener ? "" : "on",
-
-  init = function(e) {
-    if (e.type == "readystatechange" && doc.readyState != "complete") return;
-    (e.type == "load" ? win : doc)[rem](pre + e.type, init, false);
-    if (!done && (done = true)) fn.call(win, e.type || e);
-  },
-
-  poll = function() {
-    try { root.doScroll("left"); } catch(e) { setTimeout(poll, 50); return; }
-    init("poll");
-  };
-
-  if (doc.readyState == "complete") fn.call(win, "lazy");
-  else {
-    if (doc.createEventObject && root.doScroll) {
-      try { top = !win.frameElement; } catch(e) { }
-      if (top) poll();
-    }
-    doc[add](pre + "DOMContentLoaded", init, false);
-    doc[add](pre + "readystatechange", init, false);
-    win[add](pre + "load", init, false);
-  }
-}
 
 var script = document.querySelector("[data-trackets-key]") || document.querySelector("[data-trackets-customer]");
 var attr;
