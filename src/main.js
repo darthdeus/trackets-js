@@ -156,13 +156,13 @@ window["Trackets"] = {
           message = message.message;
     }
 
-    data = this.serialize({
-      message: message,
-      file_name: filename,
-      line_number: lineNumber,
-      column_number: columnNumber,
-      source_url: sourceURL,
-      stacktrace: stack
+    var data = this.serialize({
+      "message": message,
+      "file_name": filename,
+      "line_number": lineNumber,
+      "column_number": columnNumber,
+      "source_url": sourceURL,
+      "stacktrace": stack
     });
 
     this.eventLog.push("error", { "message": message });
