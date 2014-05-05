@@ -9,7 +9,7 @@
     </script>
     <script src="http://localhost:9292/lib/goog-base.js"></script>
     <script src="http://localhost:9292/lib/goog-deps.js"></script>
-    <script src="http://localhost:9292/dist/main.js"></script>
+    <script src="http://localhost:9292/dist/main.min.js"></script>
     <script>
       var orig = document.addEventListener;
       /* document.addEventListener = function(type, listener, useCapture) {
@@ -54,6 +54,8 @@
         api_key: "d1c375ec17ec8335a9c177ace3d766e4",
         api_base_url: "http://trackets.dev/"
       });
+
+      console.log("this should go to the event log");
 
       // setTimeout(function() {
       // a();

@@ -55,6 +55,7 @@ window["Trackets"] = {
     this.log("Initialized Trackets with API key:", this.api_key);
 
     wrapAll(this.storeErrorObject, this.onErrorHandler);
+    wrapLog();
 
     // TODO - add localstorage key
     this.queue = new Queue(this.tick || 2000);
@@ -221,3 +222,17 @@ if (script) {
     t["init"].call(t, { "api_key": attr.value });
   }
 }
+
+function wrapLog() {
+  var orig = console.log;
+  if (orig.wrapped) return;
+
+  var newLog = function() {
+    window["Trackets"].eventLog.push("log", { "arguments": arguments });
+    Function.prototype.apply.call(orig, console, arguments);
+  };
+
+  newLog.wrapped = true;
+  console.log = newLog;
+}
+
