@@ -122,6 +122,16 @@ window["Trackets"] = {
     into a single data object.
     */
   serialize: function(error) {
+    var data = this.custom_data;
+
+    var language = window.navigator.browserLanguage || window.navigator.language || window.navigator.userLanguage;
+    data["language"] = language;
+
+    if (window.screen) {
+      data["width"]  = window.screen.width;
+      data["height"] = window.screen.height;
+    }
+
     error["url"] = document.location.href;
     error["user_agent"] = navigator.userAgent;
     error["custom_data"] = this.custom_data;
@@ -130,7 +140,6 @@ window["Trackets"] = {
     error["event_log_length"] = this.eventLog.data.length - 2;
     error["timestamp"] = new Date().getTime();
     error["page_load_timestamp"] = this.pageLoadTimestamp;
-    error["language"] = navigator.browserLanguage || navigator.language || navigator.userLanguag;
 
     var data = {
       "error": error
