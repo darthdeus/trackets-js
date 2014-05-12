@@ -40,7 +40,7 @@ window["Trackets"] = {
     this.eventLog = new EventLog(45);
     this.eventLog.push("page-loaded", {});
 
-    wrapClick(this.eventHandler(this));
+    window.addEvent(document, "click", this.eventHandler(this));
 
     if (options["api_base_url"] || window.__TRACKETS_DEBUG_MODE || options["debug_mode"]) {
       this.debug_mode = true;
@@ -157,7 +157,6 @@ window["Trackets"] = {
   },
 
   "notify": function(message, filename, lineNumber, stack) {
-    debugger;
     this.throwIfMissing(this.api_key, "api_key is required");
 
     var sourceURL, columnNumber;
