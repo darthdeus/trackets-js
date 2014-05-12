@@ -171,7 +171,7 @@ if (!Date.now) {
 // http://www.quirksmode.org/blog/archives/2005/10/_and_the_winner_1.html
 // Use addEvent(object, event, handler) instead of object.addEventListener(event, handler)
 
-window.addEvent = function (obj, type, fn) {
+window["addEvent"] = function (obj, type, fn) {
   if (obj.addEventListener) {
     obj.addEventListener(type, fn, false);
   } else if (obj.attachEvent) {
@@ -189,7 +189,7 @@ window.addEvent = function (obj, type, fn) {
   }
 };
 
-window.removeEvent = function (obj, type, fn) {
+window["removeEvent"] = function (obj, type, fn) {
   if (obj.removeEventListener) {
     obj.removeEventListener(type, fn, false);
   } else if (obj.detachEvent) {
@@ -216,7 +216,7 @@ XMLHttpRequest.HEADERS_RECEIVED = 2;
 XMLHttpRequest.LOADING = 3;
 XMLHttpRequest.DONE = 4;
 
-window.XMLHttpRequest = XMLHttpRequest;
+window["XMLHttpRequest"] = XMLHttpRequest;
 
 //
 // FormData (http://www.w3.org/TR/XMLHttpRequest2/#interface-formdata)

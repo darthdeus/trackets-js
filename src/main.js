@@ -40,7 +40,7 @@ window["Trackets"] = {
     this.eventLog = new EventLog(45);
     this.eventLog.push("page-loaded", {});
 
-    window.addEvent(document, "click", this.eventHandler(this));
+    window["addEvent"](document, "click", this.eventHandler(this));
 
     if (options["api_base_url"] || window.__TRACKETS_DEBUG_MODE || options["debug_mode"]) {
       this.debug_mode = true;

@@ -130,7 +130,6 @@ function wrapEventHandlers(handler) {
 function wrapAll(handler, errorHandler) {
   wrapTimeout(window, handler);
 
-  window.addEvent(document, "DOMContentLoaded", function() { wrapEventHandlers(handler); });
-  //document.addEventListener("DOMContentLoaded", function() { wrapEventHandlers(handler); });
+  window["addEvent"](document, "DOMContentLoaded", function() { wrapEventHandlers(handler); });
   window.onerror = errorHandler;
 }
