@@ -1,3 +1,4 @@
+
 if (typeof goog === "undefined") {
   goog = {
     require: function() { }
@@ -6,6 +7,8 @@ if (typeof goog === "undefined") {
 
 goog.provide("trackets.main");
 
+goog.require("trackets.json");
+goog.require("trackets.polyfill");
 goog.require("trackets.guid");
 goog.require("trackets.queue");
 goog.require("trackets.stream");
@@ -153,6 +156,7 @@ window["Trackets"] = {
   },
 
   "notify": function(message, filename, lineNumber, stack) {
+    debugger;
     this.throwIfMissing(this.api_key, "api_key is required");
 
     var sourceURL, columnNumber;
