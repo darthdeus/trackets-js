@@ -9,6 +9,7 @@ goog.provide("trackets.main");
 
 goog.require("trackets.json");
 goog.require("trackets.polyfill");
+
 goog.require("trackets.guid");
 goog.require("trackets.queue");
 goog.require("trackets.stream");
@@ -108,7 +109,7 @@ window["Trackets"] = {
   },
 
   log: function() {
-    if (this.debug_mode && console && console.log) {
+    if (this.debug_mode && window.console && console.log) {
       Function.prototype.apply.call(console.log, console, arguments);
     }
   },
