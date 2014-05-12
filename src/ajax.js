@@ -38,13 +38,15 @@ function createXMLHTTPObject() {
       xmlhttp.LOADING = 3;
       xmlhttp.DONE = 4;
 
-      XMLHttpRequest.prototype.send = function(body) {
-        if (body instanceof FormData) {
-          this.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-          arguments[0] = body.toString();
+      if(i > 1) {
+        XMLHttpRequest.prototype.send = function(body) {
+          if (body instanceof FormData) {
+            this.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            arguments[0] = body.toString();
+          }
+          return send.apply(this, arguments);
         }
-        return send.apply(this, arguments);
-      };
+      }
     } catch (e) {
       continue;
     }
