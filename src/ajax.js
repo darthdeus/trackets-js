@@ -1,7 +1,7 @@
 goog.provide("trackets.ajax");
 
 function sendRequest(url, postData) {
-  var req = window.XMLHttpRequest();
+  var req = new window.XMLHttpRequest();
   if (!req) return;
   if(postData.length > 100000) return;
 
