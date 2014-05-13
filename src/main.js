@@ -143,14 +143,14 @@ window["Trackets"] = {
     return data;
   },
 
-  "notify": function(message, filename, lineNumber, stack) {
+  "notify": function(message, filename, lineNumber, columnNumber, stack) {
     this.throwIfMissing(this.api_key, "api_key is required");
 
-    var sourceURL, columnNumber;
+    var sourceURL;
 
     if (typeof message === "object") {
       var stack = message.stack,
-          columnNumber = message.columnNumber,
+          columnNumber = message.columnNumber || columnNumber,
           sourceURL = message.sourceURL,
           filename = message.fileName,
           message = message.message;
@@ -192,14 +192,14 @@ window["Trackets"] = {
     }
   },
 
-  onErrorHandler: function(message, fileName, lineNumber) {
+  onErrorHandler: function(message, fileName, lineNumber, column, errorObj) {
     var REGEXP = new RegExp("trackets.s3.amazonaws.com/client.js");
 
     if (REGEXP.test(fileName) || fileName == "http://localhost:9292/dist/main.js") {
       Trackets.log("Ignoring error raised in trackets source code")
     } else {
-      var actualMessage = (window.__trackets_last_error && window.__trackets_last_error.message) || message;
-      window["Trackets"]["notify"](actualMessage, fileName, lineNumber, window.__trackets_last_error && window.__trackets_last_error.stack);
+      var actualMessage = errorObj || (window.__trackets_last_error && window.__trackets_last_error.message) || message;
+      window["Trackets"]["notify"](actualMessage, fileName, lineNumber, column, window.__trackets_last_error && window.__trackets_last_error.stack);
     }
   }
 };
