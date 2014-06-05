@@ -29,7 +29,7 @@ window["Trackets"] = {
 
     this.guid = new GuidGenerator(TRACKETS_LOCALSTORAGE_KEY).assignGuid();
     this.api_key = options["api_key"];
-    this.custom_data = options["custom_data"] || {};
+    this["custom_data"] = options["custom_data"] || {};
     this.callback = options["callback"];
     this.tick = options["tick"];
 
@@ -124,7 +124,7 @@ window["Trackets"] = {
   serialize: function(error) {
     error["url"] = document.location.href;
     error["user_agent"] = navigator.userAgent;
-    error["custom_data"] = this.custom_data;
+    error["custom_data"] = this["custom_data"];
     error["guid"] = this.guid;
     error["event_log"] = this.eventLog.data;
     error["event_log_length"] = this.eventLog.data.length - 2;
