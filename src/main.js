@@ -74,7 +74,7 @@ window["Trackets"] = {
    * is then handled by window.onerror callback.
    */
   storeErrorObject: function(e) {
-    window.__trackets_last_error = e;
+    window["__trackets_last_error"] = e;
     throw e;
   },
 
@@ -217,7 +217,6 @@ var attr;
 
 if (script) {
   if (attr = script.attributes["data-trackets-customer"] || script.attributes["data-trackets-key"]) {
-    var t = window["Trackets"];
-    t["init"].call(t, { "api_key": attr.value });
+    window["Trackets"]["init"].call(window["Trackets"], { "api_key": attr.value });
   }
 }
