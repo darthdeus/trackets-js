@@ -33,7 +33,7 @@ window["Trackets"] = {
     this.callback = options["callback"];
     this.tick = options["tick"];
 
-    this.eventLog = new EventLog(45);
+    this.eventLog = new EventLog(100);
     this.eventLog.push("page-loaded", {});
 
     wrapClick(this.eventHandler(this));
