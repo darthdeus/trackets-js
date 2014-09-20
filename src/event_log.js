@@ -4,11 +4,16 @@ function EventLog(limit) {
   this.limit = limit;
   this.data = [];
 
-  this.push = function(event, data) {
+  this["push"] = function(type, message, level, data) {
     var result = data ? JSON.parse(JSON.stringify(data)) : {};
 
-    result["type"] = event;
-    result["timestamp"] = +new Date();
+    var item = {
+      "message":   message,
+      "type":      type,
+      "level":     level || "info",
+      "data":      result,
+      "timestamp": +new Date()
+    };
 
     if (this.data.length >= this.limit) {
       var first = this.data[0];
@@ -17,6 +22,6 @@ function EventLog(limit) {
       this.data = newData;
     }
 
-    this.data.push(result);
+    this.data.push(item);
   };
 }
