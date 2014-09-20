@@ -34,7 +34,10 @@ window["Trackets"] = {
     this.tick = options["tick"];
 
     this.eventLog = new EventLog(100);
-    this.eventLog.push("page-loaded", {});
+    this["pushEvent"]({
+      "type": "page-loaded",
+      "message": "Page loaded"
+    });
 
     wrapClick(this.eventHandler(this));
 
@@ -66,6 +69,10 @@ window["Trackets"] = {
 
   "initJquery": function() {
     return initJquery(this.onErrorHandler);
+  },
+
+  "pushEvent": function(options) {
+    this.eventLog.push(options["type"], options["message"], options["level"], options["data"]);
   },
 
   /*
@@ -113,7 +120,12 @@ window["Trackets"] = {
   eventHandler: function(context) {
     return function(event) {
       var elem = event.target || event.srcElement;
-      context.eventLog.push("event-click", { "html": elem.outerHTML.slice(0, 350) });
+      context["pushEvent"]({
+        type: "click",
+        message: "User clicked",
+        level: "info",
+        data: { "html": elem.outerHTML.slice(0, 350) }
+      });
     };
   },
 
@@ -165,7 +177,11 @@ window["Trackets"] = {
       "stacktrace": stack
     });
 
-    this.eventLog.push("error", { "message": message });
+    this.pushEvent({
+      "type": "error",
+      "message": message,
+      "level": "error"
+    });
     this.queue.push([this.report_url, JSON.stringify(data)]);
     this.forceTick();
   },
