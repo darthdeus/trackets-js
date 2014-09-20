@@ -139,7 +139,7 @@ window["Trackets"] = {
     error["custom_data"] = this["custom_data"];
     error["guid"] = this.guid;
     error["event_log"] = this.eventLog.data;
-    error["event_log_length"] = this.eventLog.data.length - 2;
+    error["event_log_length"] = this.eventLog.data.length - 1;
     error["timestamp"] = new Date().getTime();
     error["page_load_timestamp"] = this.pageLoadTimestamp;
     error["language"] = navigator.browserLanguage || navigator.language || navigator.userLanguag;
@@ -182,7 +182,9 @@ window["Trackets"] = {
       "message": message,
       "level": "error"
     });
+
     this.queue.push([this.report_url, JSON.stringify(data)]);
+
     this.forceTick();
   },
 
