@@ -177,7 +177,7 @@ window["Trackets"] = {
       "stacktrace": stack
     });
 
-    this.pushEvent({
+    this["pushEvent"]({
       "type": "error",
       "message": message,
       "level": "error"
