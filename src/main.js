@@ -1,3 +1,4 @@
+
 if (typeof goog === "undefined") {
   goog = {
     require: function() { }
@@ -5,6 +6,9 @@ if (typeof goog === "undefined") {
 }
 
 goog.provide("trackets.main");
+
+goog.require("trackets.json");
+goog.require("trackets.polyfill");
 
 goog.require("trackets.guid");
 goog.require("trackets.queue");
@@ -39,7 +43,7 @@ window["Trackets"] = {
       "message": "Page loaded"
     });
 
-    wrapClick(this.eventHandler(this));
+    window["addEvent"](document, "click", this.eventHandler(this));
 
     if (options["api_base_url"] || window.__TRACKETS_DEBUG_MODE || options["debug_mode"]) {
       this.debug_mode = true;
@@ -112,7 +116,7 @@ window["Trackets"] = {
   },
 
   log: function() {
-    if (this.debug_mode && console && console.log) {
+    if (this.debug_mode && window.console && console.log) {
       Function.prototype.apply.call(console.log, console, arguments);
     }
   },
@@ -134,6 +138,16 @@ window["Trackets"] = {
     into a single data object.
     */
   serialize: function(error) {
+    var data = this.custom_data;
+
+    var language = window.navigator.browserLanguage || window.navigator.language || window.navigator.userLanguage;
+    data["language"] = language;
+
+    if (window.screen) {
+      data["width"]  = window.screen.width;
+      data["height"] = window.screen.height;
+    }
+
     error["url"] = document.location.href;
     error["user_agent"] = navigator.userAgent;
     error["custom_data"] = this["custom_data"];
@@ -142,7 +156,6 @@ window["Trackets"] = {
     error["event_log_length"] = this.eventLog.data.length - 1;
     error["timestamp"] = new Date().getTime();
     error["page_load_timestamp"] = this.pageLoadTimestamp;
-    error["language"] = navigator.browserLanguage || navigator.language || navigator.userLanguag;
 
     var data = {
       "error": error
